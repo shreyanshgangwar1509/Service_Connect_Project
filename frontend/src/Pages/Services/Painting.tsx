@@ -40,7 +40,7 @@ function Painting() {
     fetchPainterData();
   }, []);
     const book = () => {
-        navigate("/book?service=painting", { state: { service: "painter", price: 500 } });
+        navigate("/book", { state: { service: "painter", price: 500 } });
     }
 
   return (

@@ -8,14 +8,17 @@ import { Navbar } from './components/layout/Navbar';
 import Login from './Pages/Auth/Login';
 import Register from './Pages/Auth/Register';
 import Home from './Pages/Home/Home';
+import AllService from './Pages/Services/AllService';
 import CarRepair from './Pages/Services/CarRepair';
 import Electronics from './Pages/Services/Electronics';
 import EventMange from './Pages/Services/EventMange';
+import HomeCleaning from './Pages/Services/HomeCleaning';
 import Laundry from './Pages/Services/Laundry';
-import Mainds from './Pages/Services/Mainds';
+import Maids from './Pages/Services/Maids';
 import Painting from './Pages/Services/Painting';
 import Plumbing from './Pages/Services/Plumbing';
 import Salon from './Pages/Services/Salon';
+import WorkerRoutes from './Worker/WorkerRoutes';
 
 
 const TitleUpdater = () => {
@@ -84,20 +87,35 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
+          <Route path='/services' element={<AllService />} />
+          <Route path='/bookings' element={<AllService />} />
+          <Route path='/become-provider' element={<AllService />} />
+          <Route path='/inventory' element={<AllService />} />
+          <Route path='/chatbot' />
+          <Route path='/location-tracking'/>
           {/* all services worke rlist  */}
           <Route path='/plumbing' element={<Plumbing />} />
-          <Route path='/painting' element={<Plumbing />} />
-          <Route path='/cleaning' element={<Painting />} />
-          <Route path='/maids' element={<Mainds />} />
+          <Route path='/painting' element={<Painting />} />
+          <Route path='/cleaning' element={<HomeCleaning />} />
+          <Route path='/maids' element={<Maids />} />
           <Route path='/laundry' element={<Laundry />} />
           <Route path='/car' element={<CarRepair />} />
           <Route path='/salon' element={<Salon />} />
           <Route path='/electronics' element={<Electronics />} />
           <Route path='/events' element={<EventMange />} />
+          <Route path='/gethired'/>
           <Route element={<AdminRoute />}>
             <Route path="/admin-panel" element={<Admin />} />
           </Route>
-          
+          <Route element={<WorkerRoutes />}>
+            <Route path='/mybooking' />
+            <Route path='/portfolio' />
+            <Route path='/community' />
+            <Route path='/pastbookings' />
+            <Route path='/review' />
+            <Route path='/complain' />
+            <Route path='/analytics' />
+          </Route>
         </Routes>
         <Footer />
       </Router>

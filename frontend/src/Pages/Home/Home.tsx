@@ -11,7 +11,7 @@ function Home() {
           <Hero />
           <Stats />
           <ServicesGrid />
-          <Features />
+      <Features />
       <FeaturedProviders />
       
     </div>
