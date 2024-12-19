@@ -7,8 +7,10 @@ import { NEW_MESSAGE, NEW_MESSAGE_ALERT } from './constants/Events.js';
 import { errorMiddleware } from './middlewares/error';
 import { Message } from './models/message.model.js';
 import adminroutes from './routes/admin.routes.js';
+import authroutes from './routes/auth.routes.js';
 import chatroutes from './routes/chat.routes.js';
-import authroutes from './routes/user.routes.js';
+import userroutes from './routes/user.routes.js';
+import workerroutes from './routes/worker.routes.js';
 import { connectdb } from './utills/connectdb';
 import { getSockets } from './utills/getSocket.js';
 const app = express();
@@ -21,9 +23,11 @@ connectdb();
 app.use(express.json());
 app.use(errorMiddleware);
 app.use(cookieParser());
-app.use('/v2/auth', authroutes);
-app.use('/v2/chat', chatroutes);
-app.use('/v2/admin', adminroutes);
+app.use('/api/auth', authroutes);
+app.use('/api/user', userroutes);
+app.use('/api/wroker', workerroutes);
+app.use('/api/chat', chatroutes);
+app.use('/api/admin', adminroutes);
 // middel ware for user
 io.use((socket,next) => {
     
@@ -74,7 +78,7 @@ io.on("connection", (socket) => {
     })
 })
 
-server.listen(5000, () => {
-    console.log('server is listening on 5000');
+server.listen(3000, () => {
+    console.log('server is listening on 3000');
     
 })

@@ -6,7 +6,7 @@ const router = express.Router();
 
 // Update worker's location (protected route)
 router.put('/updateLocation', isAuthenticated, updateWorkerLocation);
-
+router.get('/workerBookings', getWorkerBookings);
 // Get worker's location by worker ID
 router.get('/location/:id', getWorkerLocation);
 

@@ -1,10 +1,12 @@
-import { useState } from 'react';
-import { LucideIcon } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { LucideIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { BookingModal } from '../booking/BookingModal';
 
 interface ServiceCardProps {
+  id:string,
   icon: LucideIcon;
   name: string;
   color: string;
@@ -12,9 +14,14 @@ interface ServiceCardProps {
   price: string;
 }
 
-export function ServiceCard({ icon: Icon, name, color, description, price }: ServiceCardProps) {
+export function ServiceCard({ id,icon: Icon, name, color, description, price }: ServiceCardProps) {
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
-
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (isBookingModalOpen === true) {
+      navigate(`/${id}`);
+    }
+  },[isBookingModalOpen])
   return (
     <>
       <Card className="group hover:shadow-lg transition-shadow">

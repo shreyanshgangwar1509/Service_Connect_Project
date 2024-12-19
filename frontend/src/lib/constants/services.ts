@@ -1,12 +1,12 @@
-import { 
-  Wrench, 
-  Paintbrush, 
-  Home, 
+import {
   Car,
+  Home,
+  Paintbrush,
   Scissors,
   Shirt,
+  Users,
   Wifi,
-  Users
+  Wrench
 } from 'lucide-react';
 
 export const services = [

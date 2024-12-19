@@ -1,7 +1,7 @@
 // import { UserCircle2, Menu } from 'lucide-react';
 // import { Button } from '@/components/ui/button';
-import { NavLinks } from './NavLinks';
 import { MobileMenu } from './MobileMenu';
+import { NavLinks } from './NavLinks';
 
 export function Navbar() {
   return (
@@ -10,7 +10,7 @@ export function Navbar() {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <h1 className="text-2xl font-bold text-primary">
-              Service<span className="text-blue-600">Connect</span>
+              Service<span className="text-blue-600"> Connect</span>
             </h1>
           </div>
           

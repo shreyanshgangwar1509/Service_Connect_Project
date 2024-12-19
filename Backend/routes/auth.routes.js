@@ -11,3 +11,5 @@ router.post('/login', login);
 // router.use(isAuthenticated); after this all routes usees is authenticated auto amtically 
 router.get('/me', isAuthenticated, getMyprofile);
 router.get('/logout', isAuthenticated, logout);
+
+export default router
