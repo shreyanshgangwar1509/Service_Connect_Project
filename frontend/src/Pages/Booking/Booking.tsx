@@ -8,16 +8,23 @@ function BookPage() {
   const location = useLocation();
   const { service } = location.state || {};
 
-    return token ?
-      (
-        <div>
+    return(
+       <div>
           <h1>Booking for: {service}</h1>
           <BookingForm service={service}/>
         </div>
-      ) :
-      (
-        <h1>Login first</h1>
-      );
+    )
+    //after backend
+      // (
+      //   <div>
+      //     <h1>Booking for: {service}</h1>
+      //     <BookingForm service={service}/>
+      //   </div>
+      // ) 
+      // 
+      // (
+      //   // <h1>Login first</h1>
+      // );
 }
 
 export default BookPage;

@@ -269,7 +269,7 @@ export default function Register() {
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="border p-2 w-full"
+                  className="border p-2 w-full bg-white"
                   required
                 />
               </div>
@@ -279,7 +279,7 @@ export default function Register() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="border p-2 w-full"
+                  className="border p-2 w-full bg-white"
                   required
                 />
               </div>
@@ -289,7 +289,7 @@ export default function Register() {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="border p-2 w-full"
+                  className="border p-2 w-full bg-white"
                   required
                 />
               </div>
@@ -299,13 +299,16 @@ export default function Register() {
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="border p-2 w-full"
+                  className="border p-2 w-full bg-white"
                   required
                 />
               </div>
               <button type="submit" className="w-full bg-blue-500 text-white p-2 mt-4 rounded-lg">
                 Register
               </button>
+              <p className="text-center mt-4 text-gray-500">
+          Already have an account? <a href="/login" className="text-blue-600 hover:underline">Login</a>
+        </p>
             </form>
           </>
         )}
