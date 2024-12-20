@@ -7,11 +7,14 @@ function BookPage() {
     
   const location = useLocation();
   const { service } = location.state || {};
+const charges = location.state.price;
 
     return(
        <div>
           <h1>Booking for: {service}</h1>
-          <BookingForm service={service}/>
+          {/* <BookingForm service={service}/> */}
+          <BookingForm service={service} charges={charges} />
+
         </div>
     )
     //after backend
