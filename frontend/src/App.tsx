@@ -11,7 +11,8 @@ import Register from "./Pages/Auth/Register";
 import BookPage from "./Pages/Booking/Booking";
 import ChatBot from "./Pages/ChatBot/ChatBot";
 import Home from "./Pages/Home/Home";
-import Provider from "./Pages/Provider";
+// import Provider from "./Pages/Provider";
+import GetHiredPage from "./components/GetHired/page";
 import WorkerRoutes from "./Worker/WorkerRoutes";
 import {
   // AllService,
@@ -93,7 +94,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/services" element={<AllService />} />
-          <Route path="/become-provider" element={<Provider />} />
+          <Route path="/become-provider" element={<GetHiredPage />} />
           <Route path="/chatbot" element={<ChatBot />} />
           <Route path="/location-tracking" element={<Map />} />
           {/* Service Routes */}
