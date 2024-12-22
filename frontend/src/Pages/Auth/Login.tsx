@@ -22,7 +22,6 @@ export default function LoginPage() {
       navigate('/profile');
     } catch (error) {
       console.log(error);
-      
       setErrorMessage("Invalid email or password. Please try again.");
     }
   };
@@ -70,7 +69,7 @@ export default function LoginPage() {
         </form>
 
         <p className="text-center mt-4 text-gray-500">
-          Don’t have an account? <a href="/register" className="text-blue-600 hover:underline">Register</a>
+          Dont have an account? <a href="/register" className="text-blue-600 hover:underline">Register</a>
         </p>
       </div>
     </div>

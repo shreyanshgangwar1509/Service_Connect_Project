@@ -1,5 +1,5 @@
 import express from 'express';
-import { allChats, allmessages, allusers, getAdminData, getDashboardStats } from '../controllers/admin';
+import { allChats, allmessages, allusers, getAdminData, getDashboardStats } from '../controllers/admin.js';
 import { isAdmin } from '../middlewares/auth';
 
 const  router = express.Router();

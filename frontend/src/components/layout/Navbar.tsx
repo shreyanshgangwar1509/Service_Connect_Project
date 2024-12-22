@@ -4,6 +4,7 @@ import { MobileMenu } from './MobileMenu';
 import { NavLinks } from './NavLinks';
 
 export function Navbar() {
+  
   return (
     <nav className="fixed top-0 w-full bg-white border-b z-50">
       <div className="container mx-auto px-4 py-3">

@@ -1,6 +1,6 @@
 import express from 'express';
 import { getWorkerLocation, updateWorkerLocation } from '../controllers/workerLocation.controller';
-import { isAuthenticated } from '../middleware/auth.middleware';
+import { isAuthenticated } from '../middlewares/auth.middleware';
 
 const router = express.Router();
 

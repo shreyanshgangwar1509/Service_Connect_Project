@@ -4,14 +4,14 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { v4 as uuid } from 'uuid';
 import { NEW_MESSAGE, NEW_MESSAGE_ALERT } from './constants/Events.js';
-import { errorMiddleware } from './middlewares/error';
+import { errorMiddleware } from './middlewares/error.js';
 import { Message } from './models/message.model.js';
 import adminroutes from './routes/admin.routes.js';
 import authroutes from './routes/auth.routes.js';
 import chatroutes from './routes/chat.routes.js';
 import userroutes from './routes/user.routes.js';
 import workerroutes from './routes/worker.routes.js';
-import { connectdb } from './utills/connectdb';
+import { connectdb } from './utills/connectdb.js';
 import { getSockets } from './utills/getSocket.js';
 const app = express();
 const server = createServer(app);
@@ -39,7 +39,7 @@ io.on("connection", (socket) => {
     socket.on(NEW_MESSAGE, async ({ chatId, members, messages }) => {
         const user = {
             _id: "dshbkjn",
-            name:"Shreyasnh"
+            name:"Shreyansh"
         }
         const messageForRealTime = {
             content: messages,

@@ -9,6 +9,10 @@ const workerSchema = new Schema({
         required: true,
         select: false,
     },
+    isVerified: {
+        type: Boolean,
+        required:true,
+    },
     services: [
         {
             Type:String
