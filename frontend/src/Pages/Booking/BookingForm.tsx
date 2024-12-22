@@ -1,21 +1,30 @@
-
-
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { Calendar } from 'lucide-react';
 
 interface BookingFormProps {
   service: string;
+  charges: number; // Ensure charges is passed as a numeric value
 }
 
-const BookingForm: React.FC<BookingFormProps> = ({ service }) => {
+const BookingForm: React.FC<BookingFormProps> = ({ service, charges }) => {
   const [currentService, setCurrentService] = useState(service || '');
   const [address, setAddress] = useState('');
   const [currentAddress, setCurrentAddress] = useState('');
   const [isEditable, setIsEditable] = useState(false);
   const [date, setDate] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [total, setTotal] = useState<number>(charges || 0);
 
- 
+  useEffect(() => {
+    if (typeof charges === 'number') {
+      setTotal(charges);
+    } else {
+      const numericCharges = parseFloat(String(charges).replace(/[^0-9.]/g, ''));
+      setTotal(isNaN(numericCharges) ? 0 : numericCharges);
+    }
+  }, [charges]);
+
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       async (position) => {
@@ -35,7 +44,6 @@ const BookingForm: React.FC<BookingFormProps> = ({ service }) => {
     );
   }, []);
 
-  // Handle checkbox change to toggle address editability
   const handleCheckboxChange = () => {
     setIsEditable(!isEditable);
     if (!isEditable) {
@@ -45,18 +53,66 @@ const BookingForm: React.FC<BookingFormProps> = ({ service }) => {
     }
   };
 
-  // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const loadScript = (src: string) => {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = src;
+      script.onload = resolve;
+      script.onerror = reject;
+      document.body.appendChild(script);
+    });
+  };
+
+  const displayRazorpay = async (options: any) => {
+    await loadScript('https://checkout.razorpay.com/v1/checkout.js');
+
+    const rzp1 = new window.Razorpay(options);
+    rzp1.open();
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!currentService || !address || !date) {
       setError('Please fill out all fields before submitting.');
       return;
     }
 
-    alert(`Booking Details:\nService: ${currentService}\nAddress: ${address}\nDate: ${date}`);
+    if (total <= 0) {
+      setError('Invalid service charges. Please contact support.');
+      return;
+    }
 
-    // Clear form fields
-    setCurrentService('');
+    const amountInPaise = Math.round(total * 100);
+
+    // console.log('Total Charges (INR):', total);
+    // console.log('Amount in Paise for Razorpay:', amountInPaise);
+
+    const options = {
+      key: 'rzp_test_YsmTMZihOBVTve', // Replace with your Razorpay API key
+      amount: amountInPaise, 
+      currency: 'INR',
+      name: 'Service Connect',
+      description: `Booking for ${currentService}`,
+      image: 'https://your-logo-url.com', // Optional logo
+      handler: (response: any) => {
+        alert('Payment successful! Payment ID: ' + response.razorpay_payment_id);
+      },
+      prefill: {
+        name: 'John Doe', // Replace with user details if available
+        email: 'johndoe@example.com',
+        contact: '1234567890',
+      },
+    };
+
+    // Log Razorpay options for debugging
+    // console.log('Razorpay Options:', options);
+
+    // Display Razorpay modal
+    await displayRazorpay(options);
+
+    // Reset form fields
+    setCurrentService(service || '');
     setAddress(currentAddress);
     setDate('');
     setIsEditable(false);
@@ -111,7 +167,10 @@ const BookingForm: React.FC<BookingFormProps> = ({ service }) => {
 
         {/* Date Input */}
         <div className="mb-6">
-          <label className="block text-gray-700 font-medium mb-2">Date</label>
+          <div className="m-2 flex items-center flex-row gap-2">
+            <label className="block text-gray-700 font-medium mb-2">Date</label>
+            <Calendar />
+          </div>
           <input
             type="date"
             value={date}
@@ -121,12 +180,18 @@ const BookingForm: React.FC<BookingFormProps> = ({ service }) => {
           />
         </div>
 
+        {/* Price Display */}
+        <div className="mb-4">
+          <label className="block text-gray-700 font-medium mb-2">Price</label>
+          <p className="text-lg text-gray-900">₹{total} INR</p>
+        </div>
+
         {/* Submit Button */}
         <button
           type="submit"
           className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition duration-300"
         >
-          Book Now
+          Book Now - ₹{total} INR
         </button>
       </form>
     </div>

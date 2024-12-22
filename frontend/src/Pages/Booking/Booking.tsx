@@ -2,22 +2,19 @@ import { useLocation } from "react-router-dom";
 import BookingForm from "./BookingForm";
 
 function BookPage() {
-    
-        const token = localStorage.getItem('token');
-    
+  const token = localStorage.getItem('token');
   const location = useLocation();
-  const { service } = location.state || {};
+  const { service, price } = location.state || {}; 
 
-    return token ?
-      (
-        <div>
-          <h1>Booking for: {service}</h1>
-          <BookingForm service={service}/>
-        </div>
-      ) :
-      (
-        <h1>Login first</h1>
-      );
+  // console.log("Service:", service); 
+  // console.log("Charges:", price); 
+
+  return (
+    <div>
+      <h1>Booking for: {service}</h1>
+      <BookingForm service={service} charges={price} /> 
+    </div>
+  );
 }
 
 export default BookPage;
