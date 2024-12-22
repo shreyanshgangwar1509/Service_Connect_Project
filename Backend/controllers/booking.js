@@ -1,5 +1,4 @@
-import Booking from '../models/Booking';
-
+import { Booking } from "../models/booking.model.js";
 /**
  * Create a new booking.
  */
@@ -36,21 +35,6 @@ export const getUserBookings = async (req, res) => {
   }
 };
 
-/**
- * Get all current bookings for the worker.
- */
-export const getWorkerBookings = async (req, res) => {
-  try {
-    const bookings = await Booking.find({ workerId: req.user.id, status: 'ongoing' });
-    res.status(200).json(bookings);
-  } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
-  }
-};
-
-/**
- * Cancel a booking.
- */
 export const cancelBooking = async (req, res) => {
   try {
     const { bookingId, reason } = req.body;

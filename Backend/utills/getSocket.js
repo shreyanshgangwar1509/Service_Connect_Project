@@ -1,6 +1,8 @@
-import { userSocketIds } from "..";
+// import { userSocketIds } from "..";
+const userSocketIds = require('..');
 
-export const getSockets = (users) => {
+ const getSockets = (users) => {
     const sokckets = users.map((user)=>userSocketIds.get(user._id.toString()))
     return sokckets;
 }
+export default getSockets

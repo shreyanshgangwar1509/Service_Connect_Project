@@ -1,3 +1,4 @@
+import mongoose, { Schema } from "mongoose";
 const BookingSchema = new Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true
@@ -24,4 +25,4 @@ const BookingSchema = new Schema({
     cancellationReason: { type: String },
     
 }, { timestamps: true });
-export const Booking = models.Booking || mogoose.model("Booking", BookingSchema);
+export  const Booking = mongoose.model.Booking || mongoose.model("Booking", BookingSchema);

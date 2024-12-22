@@ -1,10 +1,10 @@
-import { ALERT, NEW_ATTACHMENT, NEW_MESSAGE_ALERT, REFETCH_CHATS } from "../constants/Events";
-import { getOtherMemeber } from "../lib/helper";
-import { Chat } from "../models/chat.model";
-import { Message } from "../models/message.model";
-import { User } from "../models/user.model";
-import DeleteFilesFromCloudinary from "../utills/DeleteFilesCloud";
-import emitEvent from "../utills/emitEvent";
+import { ALERT, NEW_ATTACHMENT, NEW_MESSAGE_ALERT, REFETCH_CHATS } from "../constants/Events.js";
+import { getOtherMemeber } from "../lib/helper.js";
+import { Chat } from "../models/chat.model.js";
+import { Message } from "../models/message.model.js";
+import { User } from "../models/user.model.js";
+import DeleteFilesFromCloudinary from "../utills/DeleteFilesCloud.js";
+import emitEvent from "../utills/emitEvent.js";
 
 const newGroupChat = async (req, res) => {
     const { name, members } = req.body
@@ -395,5 +395,5 @@ const getMessages = async (req, res) => {
 }
 
 
-export { addMembers, deleteChat, deleteChat, getChatDetails, getMessages, getMyChat, getMyGroups, LeaveGroup, newGroupChat, removeMembers, renameGroup, sendAttachment };
+export { addMembers, deleteChat, getChatDetails, getMessages, getMyChat, getMyGroups, LeaveGroup, newGroupChat, removeMembers, renameGroup, sendAttachment };
 

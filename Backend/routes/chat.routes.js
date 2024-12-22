@@ -1,7 +1,8 @@
 import express from 'express';
-import { addMembers, deleteChat, getChatDetails, getMyChat, getMyGroups, LeaveGroup, removeMembers, renameGroup, sendAttachment } from '../controllers/chat';
-import { isAuthenticated } from '../middlewares/auth';
-import { AttachmentMulter } from '../middlewares/multer';
+import { addMembers, deleteChat, getChatDetails, getMessages, getMyChat, getMyGroups, LeaveGroup, newGroupChat, removeMembers, renameGroup, sendAttachment } from '../controllers/chat.js';
+import { isAuthenticated } from '../middlewares/auth.js';
+import { AttachmentMulter } from '../middlewares/multer.js';
+
 
 const  router = express.Router();
 

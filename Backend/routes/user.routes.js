@@ -1,13 +1,15 @@
 import express from 'express';
 import {
-  cancelBooking,
   chatWithWorker,
   deleteUserAccount,
   getPastBookings,
+  getProfile,
   getUserBookings,
-  getUserProfile,
-  submitReviewToWorker,
-} from '../controllers/user.controller';
+  markBookingAsPaid,
+  submitReviewToWorker
+} from '../controllers/user.js';
+
+import { cancelBooking, completeBooking, createBooking } from '../controllers/booking.js';
 import { isAuthenticated, IsBooked } from '../middlewares/auth.js';
 
 
@@ -15,7 +17,7 @@ const router = express.Router();
 
 // Protect all routes with authentication
 router.use(isAuthenticated);
-router.get('/me', getUserProfile);
+router.get('/me', getProfile);
 router.post('/book/:service/:workerid', createBooking);             // Create a new booking
 router.get('/myBookings', getUserBookings);      // Get user's current bookings
  // Get worker's current bookings

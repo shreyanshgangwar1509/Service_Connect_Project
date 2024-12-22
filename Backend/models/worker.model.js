@@ -1,3 +1,4 @@
+import mongoose, { Schema } from "mongoose";
 
 const workerSchema = new Schema({
     name: {
@@ -7,34 +8,35 @@ const workerSchema = new Schema({
     password: {
         type: String,
         required: true,
-        select: false,
+        select: false, // Prevent password from being included in queries by default
     },
     isVerified: {
         type: Boolean,
-        required:true,
+        required: true,
     },
     services: [
         {
-            Type:String
+            type: String, // Corrected 'Type' to 'type'
         }
     ],
     phone: {
         type: String,
-        required:true,
+        required: true,
     },
     location: {
-    type: {
-        type: String, // GeoJSON type
+        type: {
+            type: String, // GeoJSON type
             enum: ['Point'],
             default: 'Point',
         },
         coordinates: {
-        type: [Number], // [longitude, latitude]
+            type: [Number], // [longitude, latitude]
             default: [0, 0],
         },
     },
-    avaliable: {
+    available: {
         type: Boolean,
+        default: true, // Default value added
     },
     avatar: {
         public_id: {
@@ -47,21 +49,26 @@ const workerSchema = new Schema({
         },
     },
     identity: {
-        IdentityType:{
-            Type: String,
-            required:true,
+        identityType: { // Corrected 'IdentityType' to 'identityType'
+            type: String,
+            required: true,
         },
-        IdentityNumber: {
-            Type: String,
-            required:true,
+        identityNumber: { // Corrected 'IdentityNumber' to 'identityNumber'
+            type: String,
+            required: true,
         }
     },
 }, { timestamps: true });
 
+// Add Geospatial Index
 workerSchema.index({ location: '2dsphere' });
-workerSchema.pre("save", async  function(next) {
-    if (this.isModified("password")) next();
-    this.password = await bcrypt.hash(this.password, 10);
-})
 
-export const Worker = models.Worker || mogoose.model("Worker", workerSchema);
+// Hash password before saving
+workerSchema.pre("save", async function (next) {
+    if (!this.isModified("password")) return next();
+    this.password = await bcrypt.hash(this.password, 10);
+    next();
+});
+
+// Prevent duplicate model definition
+export const Worker = mongoose.models.Worker || mongoose.model("Worker", workerSchema);

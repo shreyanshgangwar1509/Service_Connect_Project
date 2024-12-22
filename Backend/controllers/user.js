@@ -1,9 +1,9 @@
-import { NEW_REQUEST, REFETCH_CHATS } from "../constants/Events";
-import { getOtherMemeber } from "../lib/helper";
-import { Chat } from "../models/chat.model";
-import { Requset } from "../models/reuest.model";
-import { User } from "../models/user.model";
-import emitEvent from "../utills/emitEvent";
+import { NEW_REQUEST, REFETCH_CHATS } from "../constants/Events.js";
+import { getOtherMemeber } from "../lib/helper.js";
+import { Chat } from "../models/chat.model.js";
+import { Requset } from "../models/reuest.model.js";
+import { User } from "../models/user.model.js";
+import emitEvent from "../utills/emitEvent.js";
 
 import VerificationToken from '../models/VerificationToken.js';
 import sendverificationemail from '../utills/send-otp.js';
@@ -373,6 +373,23 @@ const submitReviewToWorker = async (req, res) => {
     res.status(500).json({ message: 'Server error', error });
   }
 };
+const chatWithWorker = async (req, res) => {
+  try {
+    
+  } catch (error) {
+    
+  }
+}
+const deleteUserAccount = async (req, res) => {
+  try {
+    
+  } catch (error) {
+    
+  }
+}
+const markBookingAsPaid = async (req, res) => {
+  
+}
 
-export { acceptRequest, GetAllNotifications, GetAllNotifications, getMyFriends, getPastBookings, getProfile, getUserBookings, googleSignIn, Login, logoutUser, searchUser, sendRequest, SignUp, submitReviewToWorker, tokencontroller, verifyemail };
+export { acceptRequest, chatWithWorker, deleteUserAccount, GetAllNotifications, getMyFriends, getPastBookings, getProfile, getUserBookings, googleSignIn, Login, logoutUser, markBookingAsPaid, searchUser, sendRequest, SignUp, submitReviewToWorker, tokencontroller, verifyemail };
 

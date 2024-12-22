@@ -4,6 +4,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -12,12 +13,16 @@
   "dependencies": {
     "axios": "^1.7.9",
     "cookie-parser": "^1.4.7",
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "google-auth-library": "^9.15.0",
     "http": "^0.0.1-security",
     "mongoose": "^8.9.2",
+    "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.16",
     "nodemon": "^3.1.9",
     "socket.io": "^4.8.1",
+    "twilio": "^5.4.0",
     "uuid": "^11.0.3"
   }
 }

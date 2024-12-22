@@ -3,6 +3,12 @@ import jwt from "jsonwebtoken";
 
 dotenv.config();
 
+const cookieopt = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'Strict',
+      maxAge: 60 * 60 * 1000, 
+    }
 export const setToken = (user) => {
     const token = jwt.sign(
         {
@@ -14,3 +20,4 @@ export const setToken = (user) => {
 
     return token;
 };
+export default cookieopt;

@@ -1,4 +1,4 @@
-
+import mongoose, { Schema } from "mongoose";
 const chatSchema = new Schema({
     name: String,
     username: {
@@ -10,14 +10,14 @@ const chatSchema = new Schema({
         default:false,
     },
     creator: {
-        type: Types.ObjectId,
+        type: mongoose.Types.ObjectId,
         ref:"User",
     },
     members: [
         {
-            type: Types.ObjectId,
+            type: mongoose.Types.ObjectId,
         ref:"User",
         }
     ],    
 }, { timestamps: true });
-export const Chat = models.Chat || mogoose.model("Chat", chatSchema);
+export const Chat = mongoose.model.Chat || mongoose.model("Chat", chatSchema);

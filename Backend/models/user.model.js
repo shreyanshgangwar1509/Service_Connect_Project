@@ -1,4 +1,4 @@
-
+import mongoose, { Schema } from "mongoose";
 const userSchema = new Schema({
     name: String,
     username: {
@@ -36,4 +36,4 @@ userSchema.pre("save", async  function(next) {
     this.password = await bcrypt.hash(this.password, 10);
 })
 
-export const User = models.User || mogoose.model("User", userSchema);
+export const User = mongoose.model.User || mongoose.model("User", userSchema);

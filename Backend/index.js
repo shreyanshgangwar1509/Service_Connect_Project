@@ -10,7 +10,6 @@ import adminroutes from './routes/admin.routes.js';
 import authroutes from './routes/auth.routes.js';
 import chatroutes from './routes/chat.routes.js';
 import userroutes from './routes/user.routes.js';
-import workerroutes from './routes/worker.routes.js';
 import { connectdb } from './utills/connectdb.js';
 import { getSockets } from './utills/getSocket.js';
 const app = express();
@@ -25,7 +24,7 @@ app.use(errorMiddleware);
 app.use(cookieParser());
 app.use('/api/auth', authroutes);
 app.use('/api/user', userroutes);
-app.use('/api/wroker', workerroutes);
+// app.use('/api/wroker', workerroutes);
 app.use('/api/chat', chatroutes);
 app.use('/api/admin', adminroutes);
 // middel ware for user

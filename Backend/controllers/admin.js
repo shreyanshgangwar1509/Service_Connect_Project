@@ -1,7 +1,8 @@
-import { Chat } from "../models/chat.model";
-import { Message } from "../models/message.model";
-import { User } from "../models/user.model";
-import { cookieopt } from "../utills/sendtoken";
+import { Chat } from "../models/chat.model.js";
+import { Message } from "../models/message.model.js";
+import { User } from "../models/user.model.js";
+import cookieopt from "../utills/token.js";
+
 
 const allusers = async (req, res) => {
     try {
@@ -184,8 +185,5 @@ const getAdminData = async (req, res) => {
         
     }
 }
-
-
-
-export default {getAdminData,getDashboardStats,adminLogin,adminLogout, allusers ,allChats,allmessages};
+export { adminLogin, adminLogout, allChats, allmessages, allusers, getAdminData, getDashboardStats };
 

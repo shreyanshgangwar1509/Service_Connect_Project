@@ -1,4 +1,4 @@
-
+import mongoose, { Schema } from "mongoose";
 const requestSchema = new Schema({
     status: {
         type: String,
@@ -7,15 +7,15 @@ const requestSchema = new Schema({
     },
 
     sender: {
-        type: Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true,
     },
     receiver: {
-        type: Types.ObjectId,
+        type:mongoose.Schema.Types.ObjectId,
         ref: "User", 
         required: true,
     },
      
 }, { timestamps: true });
-export const Requset = models.Requset || mogoose.model("Requset", requestSchema);
+export const Requset = mongoose.model.Requset || mongoose.model("Requset", requestSchema);

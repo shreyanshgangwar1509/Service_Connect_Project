@@ -1,11 +1,10 @@
-
-const messageSchema = new Schema({
+import mongoose from "mongoose";
+const messageSchema = new mongoose.Schema({
     content:String,
     sender: {
-        type: Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User",
                 required: true,
-
     },
     attachments: [
         {
@@ -21,14 +20,14 @@ const messageSchema = new Schema({
     ],
     chat: {
         required: true,
-        type: Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref:"Chat",
     },
     members: [
         {
-            type: Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
         ref:"User",
         }
     ],    
 }, { timestamps: true });
-export const Message = models.Message || mogoose.model("Message", messageSchema);
+export const Message = mongoose.model.Message || mongoose.model("Message", messageSchema);
