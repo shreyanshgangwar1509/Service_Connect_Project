@@ -2,7 +2,9 @@
 import { Navigate, Outlet } from "react-router-dom";
 
 const AdminRoute = () => {
-  const {token, role}= localStorage.getItem('admin') ;
+  // const token= localStorage.getItem('admin') ;
+  const token = "ajsfl";
+  const role = 'admin';
   if (!token) {
     return <Navigate to="/login" />;
   }

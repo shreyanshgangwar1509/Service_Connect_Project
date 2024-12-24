@@ -1,21 +1,51 @@
-import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Calendar } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 
+// Interface for component props
 interface BookingFormProps {
   service: string;
   charges: number; // Ensure charges is passed as a numeric value
 }
 
+// Interface for Razorpay options
+interface RazorpayOptions {
+  key: string;
+  amount: number;
+  currency: string;
+  name: string;
+  description: string;
+  image?: string;
+  handler: (response: RazorpayResponse) => void;
+  prefill: {
+    name: string;
+    email: string;
+    contact: string;
+  };
+}
+
+// Interface for Razorpay response
+interface RazorpayResponse {
+  razorpay_payment_id: string;
+}
+
+// Interface for GeoLocation Coordinates
+interface GeolocationCoordinates {
+  latitude: number;
+  longitude: number;
+}
+
+// Main Component
 const BookingForm: React.FC<BookingFormProps> = ({ service, charges }) => {
-  const [currentService, setCurrentService] = useState(service || '');
-  const [address, setAddress] = useState('');
-  const [currentAddress, setCurrentAddress] = useState('');
-  const [isEditable, setIsEditable] = useState(false);
-  const [date, setDate] = useState('');
+  const [currentService, setCurrentService] = useState<string>(service || '');
+  const [address, setAddress] = useState<string>('');
+  const [currentAddress, setCurrentAddress] = useState<string>('');
+  const [isEditable, setIsEditable] = useState<boolean>(false);
+  const [date, setDate] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const [total, setTotal] = useState<number>(charges || 0);
 
+  // Update total if charges change
   useEffect(() => {
     if (typeof charges === 'number') {
       setTotal(charges);
@@ -25,15 +55,16 @@ const BookingForm: React.FC<BookingFormProps> = ({ service, charges }) => {
     }
   }, [charges]);
 
+  // Fetch current location
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
-      async (position) => {
+      async (position: { coords: GeolocationCoordinates }) => {
         const { latitude, longitude } = position.coords;
         try {
           const response = await axios.get(
             `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
           );
-          const fetchedAddress = response.data.display_name;
+          const fetchedAddress: string = response.data.display_name;
           setCurrentAddress(fetchedAddress);
           setAddress(fetchedAddress);
         } catch (err) {
@@ -44,6 +75,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ service, charges }) => {
     );
   }, []);
 
+  // Handle checkbox for editable address
   const handleCheckboxChange = () => {
     setIsEditable(!isEditable);
     if (!isEditable) {
@@ -53,24 +85,30 @@ const BookingForm: React.FC<BookingFormProps> = ({ service, charges }) => {
     }
   };
 
-  const loadScript = (src: string) => {
+  // Load Razorpay script dynamically
+  const loadScript = (src: string): Promise<void> => {
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');
       script.src = src;
-      script.onload = resolve;
-      script.onerror = reject;
+      script.onload = () => resolve();
+      script.onerror = () => reject(new Error('Failed to load Razorpay script'));
       document.body.appendChild(script);
     });
   };
 
-  const displayRazorpay = async (options: any) => {
-    await loadScript('https://checkout.razorpay.com/v1/checkout.js');
-
-    const rzp1 = new window.Razorpay(options);
-    rzp1.open();
+  // Display Razorpay modal
+  const displayRazorpay = async (options: RazorpayOptions): Promise<void> => {
+    try {
+      await loadScript('https://checkout.razorpay.com/v1/checkout.js');
+      const rzp1 = new (window as any).Razorpay(options);
+      rzp1.open();
+    } catch (error) {
+      console.error('Razorpay SDK failed to load:', error);
+    }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Handle form submission
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!currentService || !address || !date) {
@@ -85,30 +123,23 @@ const BookingForm: React.FC<BookingFormProps> = ({ service, charges }) => {
 
     const amountInPaise = Math.round(total * 100);
 
-    // console.log('Total Charges (INR):', total);
-    // console.log('Amount in Paise for Razorpay:', amountInPaise);
-
-    const options = {
-      key: 'rzp_test_YsmTMZihOBVTve', // Replace with your Razorpay API key
-      amount: amountInPaise, 
+    const options: RazorpayOptions = {
+      key: 'rzp_test_YsmTMZihOBVTve',
+      amount: amountInPaise,
       currency: 'INR',
       name: 'Service Connect',
       description: `Booking for ${currentService}`,
-      image: 'https://your-logo-url.com', // Optional logo
-      handler: (response: any) => {
+      image: 'https://your-logo-url.com',
+      handler: (response: RazorpayResponse) => {
         alert('Payment successful! Payment ID: ' + response.razorpay_payment_id);
       },
       prefill: {
-        name: 'John Doe', // Replace with user details if available
+        name: 'John Doe',
         email: 'johndoe@example.com',
         contact: '1234567890',
       },
     };
 
-    // Log Razorpay options for debugging
-    // console.log('Razorpay Options:', options);
-
-    // Display Razorpay modal
     await displayRazorpay(options);
 
     // Reset form fields
