@@ -1,9 +1,8 @@
 import axios from 'axios';
 const Profile = async()=> {
     
-    const token = localStorage.getItem('token') || '';
-    // const decode = 
-    console.log(token);
+    const adminData = JSON.parse(localStorage.getItem('user-info') || '{}')
+  const token = adminData.token || null
     
     const response = await axios.get(`${process.env.BACKEND_URL}/api/auth/me`);
     
