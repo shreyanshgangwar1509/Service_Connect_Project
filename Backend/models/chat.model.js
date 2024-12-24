@@ -1,18 +1,23 @@
 import mongoose, { Schema } from "mongoose";
 const chatSchema = new Schema({
-    name: String,
-    username: {
-        type: String,
-        required: true,
-    },
     groupChat: {
         type: Boolean,
         default:false,
     },
-    creator: {
+    userId: {
         type: mongoose.Types.ObjectId,
         ref:"User",
     },
+    workerId: {
+        type: mongoose.Types.ObjectId,
+        ref:"Worker",
+    },
+    messages: [
+        {
+        type: mongoose.Types.ObjectId,
+        ref:"Message",
+    }
+    ],
     members: [
         {
             type: mongoose.Types.ObjectId,

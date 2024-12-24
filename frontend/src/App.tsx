@@ -13,22 +13,24 @@ import ChatBot from "./Pages/ChatBot/ChatBot";
 import Home from "./Pages/Home/Home";
 // import Provider from "./Pages/Provider";
 import GetHiredPage from "./components/GetHired/page";
-import WorkerRoutes from "./Worker/WorkerRoutes";
+import BookingsPage from "./Pages/Booking/BookingsPage";
+import MyBookings from "./Pages/Booking/MyBookings";
+import Inventory from "./Pages/Inventory";
+import Profile from "./Pages/Profile";
+import AllService from "./Pages/Services/AllService";
 import {
-  // AllService,
-  Painting,
   CarRepair,
   Electronics,
   EventManagement,
   HomeCleaning,
   Laundry,
   Maids,
+  // AllService,
+  Painting,
   Plumbing,
   Salon,
 } from "./Pages/Services/ServiceTemplate"; // Updated import path
-import AllService from "./Pages/Services/AllService";
-import BookingsPage from "./Pages/Booking/BookingsPage";
-import Inventory from "./Pages/Inventory";
+import WorkerRoutes from "./Worker/WorkerRoutes";
 
 const TitleUpdater = () => {
   const location = useLocation();
@@ -92,6 +94,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/book" element={<BookPage />} />
           <Route path="/login" element={<Login />} />
+          <Route path='/profile' element={<Profile/>}/>
           <Route path="/register" element={<Register />} />
           <Route path="/services" element={<AllService />} />
           <Route path="/become-provider" element={<GetHiredPage />} />
@@ -107,7 +110,7 @@ function App() {
           <Route path="/salon" element={<Salon />} />
           <Route path="/electronics" element={<Electronics />} />
           <Route path="/events" element={<EventManagement />} />
-          <Route path="/gethired" />
+          <Route path="//become-provider" element={<GetHiredPage/>} />
           <Route path="/bookings" element={<BookingsPage/>}/>
           <Route path="/inventory" element={<Inventory/>}/>
           {/* Admin and Worker Routes */}
@@ -115,7 +118,7 @@ function App() {
             <Route path="/admin-panel" element={<Admin />} />
           </Route>
           <Route element={<WorkerRoutes />}>
-            <Route path="/mybooking" />
+            <Route path="/mybooking" element={<MyBookings/> } />
             <Route path="/portfolio" />
             <Route path="/community" />
             <Route path="/pastbookings" />

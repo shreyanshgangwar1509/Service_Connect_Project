@@ -20,12 +20,6 @@ export default async function sendVerificationEmail(req, email) {
     });
     await newToken.save(); // Save the new token to the database
 
-    // Store the OTP and email in the session
-    // req.session.otp = otp; // Store the OTP in session
-    // req.session.email = email; // Store the email in session
-    // req.session.expiration = Date.now() + 5 * 60 * 1000; // 5 minutes expiration
-
-    // Send OTP email
     await sendOtpEmail(email, otp);
     console.log(`OTP ${otp} sent to ${email}`); // Log for debugging
   } catch (error) {

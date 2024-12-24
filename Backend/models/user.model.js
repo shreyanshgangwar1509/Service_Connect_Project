@@ -5,10 +5,14 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
+    email: {
+        type: String,
+        required:true,
+    },
     role: {
         type: String,
         default: 'user',
-        enum:['user','admin']
+        enum:['user','admin','worker']
     },
     isVerified: {
         type: Boolean,
@@ -22,18 +26,18 @@ const userSchema = new Schema({
     avatar: {
         public_id: {
             type: String,
-            required: true,
+            // required: ,
         },
         url: {
             type: String,
-            required: true,
+            // required: true,
         },
     }
 }, { timestamps: true });
 
-userSchema.pre("save", async  function(next) {
-    if (this.isModified("password")) next();
-    this.password = await bcrypt.hash(this.password, 10);
-})
+// userSchema.pre("save", async  function(next) {
+//     if (this.isModified("password")) next();
+//     this.password = await bcrypt.hash(this.password, 10);
+// })
 
 export const User = mongoose.model.User || mongoose.model("User", userSchema);

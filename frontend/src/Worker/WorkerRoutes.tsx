@@ -2,9 +2,9 @@
 import { Navigate, Outlet } from "react-router-dom";
 
 const WorkerRoutes = () => {
-  // const {token, role}= localStorage.getItem('worker') ;
-  const token = "gsdjkl";
-  const role = 'admin';
+  const adminData = JSON.parse(localStorage.getItem('user-info') || '{}')
+  const token = adminData.token || null
+  const role = adminData.role || null
   if (!token) {
     return <Navigate to="/login" />;
   }

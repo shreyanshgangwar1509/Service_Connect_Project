@@ -1,12 +1,8 @@
-// Import necessary models (assuming Mongoose is used)
 import { Booking } from '../models/booking.model.js';
 import { Chat } from '../models/chat.model.js';
+import { Message } from '../models/message.model.js';
 import { Worker } from '../models/worker.model.js';
 
-
-/**
- * Get the current worker profile.
- */
 const workerProfile = async (req, res) => {
   try {
     const worker = await Worker.findById(req.user.id);
@@ -19,21 +15,15 @@ const workerProfile = async (req, res) => {
   }
 };
 
-/**
- * Get current bookings for the worker.
- */
 const CurrentBooking = async (req, res) => {
   try {
-    const bookings = await Booking.find({ workerId: req.user.id, status: 'ongoing' });
+    const bookings = await Booking.find({ workerId: req.user, status: 'ongoing' });
     res.status(200).json(bookings);
   } catch (error) {
     res.status(500).json({ message: 'Server error', error });
   }
 };
 
-/**
- * Get past bookings for the worker.
- */
 const PastBookings = async (req, res) => {
   try {
     const bookings = await Booking.find({ workerId: req.user.id, status: 'completed' });
@@ -43,12 +33,9 @@ const PastBookings = async (req, res) => {
   }
 };
 
-/**
- * Get the worker's portfolio.
- */
 const WorkerPortfolio = async (req, res) => {
   try {
-    const worker = await Worker.findById(req.user.id).select('portfolio');
+    const worker = await Worker.findById(req.user).select('portfolio');
     if (!worker) {
       return res.status(404).json({ message: 'Worker not found' });
     }
@@ -58,9 +45,6 @@ const WorkerPortfolio = async (req, res) => {
   }
 };
 
-/**
- * Add the cost of additional materials for a booking.
- */
 const AddOnCostOfMaterial = async (req, res) => {
   try {
     const { bookingId, additionalCost } = req.body;
@@ -81,44 +65,51 @@ const AddOnCostOfMaterial = async (req, res) => {
 
 const ChatWithUser = async (req, res) => {
   try {
-    const { userId, message } = req.body;
+        const { message } = req.body;
+      const workerId = req.user;
+      const userId = req.params.userId;
+        // Validate required fields
+        if (!userId || !workerId || !message) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'userId, workerId, and message are required' 
+            });
+        }
+        console.log('Hello ');
+        
+        // Find an existing chat between user and worker
+        let chat = await Chat.findOne({ userId, workerId });
 
-    const chat = new Chat({
-      workerId: req.user.id,
-      userId,
-      messages: [{ senderId: req.user.id, message }],
-    });
+        // If no chat exists, create a new one
+        if (!chat) {
+            chat = await Chat.create({ userId, workerId, messages: [] });
+        }
 
-    await chat.save();
-    res.status(201).json({ message: 'Message sent successfully', chat });
-  } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
-  }
+        // Add the new message to the chat
+        const newMessage = await Message.create({
+            senderId: userId,
+            receiverId: workerId,
+            message,
+        });
+
+        chat.messages.push(newMessage._id);
+        await chat.save();
+
+        return res.status(200).json({
+            success: true,
+            message: 'Message sent successfully',
+            data: newMessage,
+        });
+    } catch (error) {
+        console.error('Error in chatWithWorker:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Internal server error',
+            error: error.message,
+        });
+    }
 };
 
-/**
- * Cancel a booking with a reason and penalty.
- */
-// export const CancelBooking = async (req, res) => {
-//   try {
-//     const { bookingId, reason, penalty } = req.body;
-
-//     const booking = await Booking.findById(bookingId);
-
-//     if (!booking) {
-//       return res.status(404).json({ message: 'Booking not found' });
-//     }
-
-//     booking.status = 'cancelled';
-//     booking.cancellationReason = reason;
-//     booking.penalty = penalty;
-
-//     await booking.save();
-//     res.status(200).json({ message: 'Booking cancelled successfully', booking });
-//   } catch (error) {
-//     res.status(500).json({ message: 'Server error', error });
-//   }
-// };
 
 /**
  * Delete the worker's account.
@@ -135,7 +126,7 @@ const ChatWithUser = async (req, res) => {
 const updateWorkerLocation = async (req, res) => {
   try {
     const { longitude, latitude } = req.body;
-    const workerId = req.user.id; // Assuming `req.user` contains the authenticated worker's ID
+    const workerId = req.user; // Assuming `req.user` contains the authenticated worker's ID
 
     const worker = await Worker.findById(workerId);
 
@@ -152,9 +143,6 @@ const updateWorkerLocation = async (req, res) => {
   }
 };
 
-/**
- * Get worker's current location.
- */
 const getWorkerLocation = async (req, res) => {
   try {
     const workerId = req.params.id; // Get worker ID from URL params
@@ -170,7 +158,7 @@ const getWorkerLocation = async (req, res) => {
     res.status(500).json({ message: 'Server error', error });
   }
 };
-const getWorkerBookings = async (req, res) => {
+export const getWorkerBookings = async (req, res) => {
   try {
     const bookings = await Booking.find({ workerId: req.user.id, status: 'ongoing' });
     res.status(200).json(bookings);

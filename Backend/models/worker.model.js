@@ -5,6 +5,10 @@ const workerSchema = new Schema({
         type: String,
         required: true,
     },
+    email: {
+        type: String,
+        required:true
+    },
     password: {
         type: String,
         required: true,
@@ -12,7 +16,11 @@ const workerSchema = new Schema({
     },
     isVerified: {
         type: Boolean,
-        required: true,
+        default:false,
+    },
+    role: {
+        type: String,
+        default:'worker,'
     },
     services: [
         {
@@ -41,11 +49,11 @@ const workerSchema = new Schema({
     avatar: {
         public_id: {
             type: String,
-            required: true,
+            // required: true,
         },
         url: {
             type: String,
-            required: true,
+            // required: true,
         },
     },
     identity: {
@@ -58,17 +66,65 @@ const workerSchema = new Schema({
             required: true,
         }
     },
+    ratingcnt: {
+        type: Number,
+        default:0,
+    },
+    rating: {
+        type: Number,
+        default:0,
+    },
+    review: [{
+        type:String,
+    }],
+    portfolio: {
+        projects: [
+            {
+                title: { type: String, required: true },
+                description: { type: String },
+                images: [
+                    {
+                        public_id: { type: String },
+                        url: { type: String }
+                    }
+                ],
+                completedAt: { type: Date }
+            }
+        ],
+        experience: {
+            years: { type: Number, default: 0 },
+            details: { type: String }
+        },
+        moneyManagement: {
+            monthly: [
+                {
+                    month: { type: String, required: true }, // e.g., 'January', 'February'
+                    income: { type: Number, default: 0 },
+                    expenses: { type: Number, default: 0 },
+                    savings: { type: Number, default: 0 }
+                }
+            ],
+            yearly: [
+                {
+                    year: { type: Number, required: true }, // e.g., 2024
+                    totalIncome: { type: Number, default: 0 },
+                    totalExpenses: { type: Number, default: 0 },
+                    totalSavings: { type: Number, default: 0 }
+                }
+            ]
+        }
+    }
 }, { timestamps: true });
 
 // Add Geospatial Index
 workerSchema.index({ location: '2dsphere' });
 
 // Hash password before saving
-workerSchema.pre("save", async function (next) {
-    if (!this.isModified("password")) return next();
-    this.password = await bcrypt.hash(this.password, 10);
-    next();
-});
+// workerSchema.pre("save", async function (next) {
+//     if (!this.isModified("password")) return next();
+//     this.password = await bcrypt.hash(this.password, 10);
+//     next();
+// });
 
 // Prevent duplicate model definition
 export const Worker = mongoose.models.Worker || mongoose.model("Worker", workerSchema);

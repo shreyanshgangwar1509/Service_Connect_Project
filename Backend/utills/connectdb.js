@@ -1,4 +1,4 @@
-
+import mongoose from "mongoose";
 export const connectdb = async() => {
     try {
         const respones = await mongoose.connect(process.env.MOGOURI);

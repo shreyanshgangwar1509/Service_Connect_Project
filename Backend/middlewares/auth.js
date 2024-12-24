@@ -1,13 +1,13 @@
+import jwt from 'jsonwebtoken';
 import { Booking } from '../models/booking.model.js';
-
 export const IsBooked = async (req, res, next) => {
   try {
-    const { userId } = req.body;
+    const worker = req.params.workerid;
 
     // Check if there's an active booking between the worker and the user
     const booking = await Booking.findOne({
-      workerId: req.user,
-      userId: userId,
+      workerId: worker,
+      userId: req.user,
       status: 'ongoing',
     });
 
@@ -21,20 +21,28 @@ export const IsBooked = async (req, res, next) => {
     res.status(500).json({ message: 'Server error', error });
   }
 };
+export const isAuthenticated = async (req, res, next) => {
+    try {
+        // Access the token from cookies
+        const token = req.cookies['access-token']; // Accessing token from request cookies
 
-export const isAuthenticated = async (req,res,next) => {
-     try {
-        const token = res.cookie['access-token'];
+        // console.log('cookie ', req.cookies)
         if (!token) {
-            res.status(500).json({ message: "you are not Logged in " });
+            return res.status(401).json({ message: "You are not logged in." });
         }
-        const decodedData = jwt.verify(token, process.env.JWT_SECERET);
-       req.user = decodedData._id;
-       req.role = decodedData.role;
-         next();
-    } catch (error) {
-        res.status(500).json({ message: "Error in checking " });
+      const decodedData = jwt.verify(token, process.env.JWT_SECERET);
+      console.log(decodedData);
+      
+        req.user = decodedData.userId;
+        req.role = decodedData.role;
+        console.log(req.role);
         
+        // Continue to the next middleware or route handler
+        next();
+    } catch (error) {
+        // Respond with an error if any issue occurs
+        console.error("Error in authentication middleware:", error);
+        return res.status(500).json({ message: "Error in checking authentication" });
     }
 }
 

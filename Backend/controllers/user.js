@@ -12,6 +12,12 @@ import { OAuth2Client } from 'google-auth-library';
 import jwt from 'jsonwebtoken';
 import { setToken } from '../utills/token.js';
 // Initialize OAuth2Client with your Google Client ID
+import dotenv from 'dotenv';
+import { Booking } from "../models/booking.model.js";
+import { Message } from "../models/message.model.js";
+import { Worker } from "../models/worker.model.js";
+dotenv.config();
+
 const client = new OAuth2Client('YOUR_GOOGLE_CLIENT_ID');
 
 const googleSignIn = async (req, res) => {
@@ -44,9 +50,10 @@ const googleSignIn = async (req, res) => {
 
     const accessToken = setToken(user);
     const refreshToken = jwt.sign({ user, role }, process.env.JWT_SECRET || '', { expiresIn: "1d" });
-
+    
+    
     res.cookie(process.env.ACCESS_TOKEN, accessToken, { httpOnly: true, secure: true });
-    res.cookie(process.env.REFRESH_TOKEN, refreshToken, { httpOnly: true, secure: true });
+    res.cookie(process.env.REFERESH_TOKEN, refreshToken, { httpOnly: true, secure: true });
 
     res.status(200).json({ message: "Google Sign-In successful", user });
   } catch (error) {
@@ -58,6 +65,7 @@ const SignUp = async (req, res) => {
   console.log('Auth routes called register');
 
   const { username, email, password, role } = req.body; // Added role
+  // const avatar = req.files[0];
   console.log("Received email:", email);
 
   try {
@@ -70,9 +78,49 @@ const SignUp = async (req, res) => {
       return res.status(400).json({ message: 'User/Worker already exists' });
     }
 
-    const user = new Model({ username, email, password, isVerified: false });
+    let user;
+    if (role == 'user' || role == 'admin') {
+      user = new Model({ username, email, password, isVerified: false });
+      
+    }
+    else if (role == 'worker') {
+      let {
+            name,
+            password,
+            isVerified,
+            services,
+        phone,
+            email,
+            location,
+            avatar,
+            identity
+        } = req.body;
+
+        // Check if the worker already exists
+        const existingWorker = await Worker.findOne({ phone });
+        if (existingWorker) {
+            return res.status(400).json({ message: 'Worker already exists with this phone number.' });
+      }
+      user = new Worker({
+            name,
+        password,
+            email,
+            isVerified: isVerified || false,
+            services,
+            phone,
+            location: location || {
+                type: 'Point',
+                coordinates: [0, 0]
+            },
+            avatar: avatar || {
+                public_id: '',
+                url: ''
+            },
+            identity
+        });
+
+    }
     await user.save();
-    console.log("User saved successfully:", user);
 
     await sendverificationemail(req, email);
     return res.status(200).json({ message: "User/Worker registered successfully", user });
@@ -82,18 +130,23 @@ const SignUp = async (req, res) => {
   }
 };
 const Login = async (req, res) => {
-  const { email, password, role } = req.body; // Added role
+  const { email, password,role } = req.body; // Added role
+  // const role = req.role;
   console.log("Login attempt for email:", email);
   
   try {
     const Model = role === 'worker' ? Worker : User;
 
-    const user = await Model.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ message: 'Invalid credentials: user/worker not found' });
-    }
-
+    const user = await Model.findOne(
+        { email },
+        "password isVerified role"
+      ).select("password isVerified role");    if (!user) {
+          return res.status(400).json({ message: 'Invalid credentials: user/worker not found' });
+        }
+    
     const isMatch = (password === user.password); // Replace with bcrypt.compare
+    // console.log(password," ",user.password);
+    // console.log(process.env.ACCESS_TOKEN,process.env.REFERESH_TOKEN);
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid credentials: password does not match' });
     }
@@ -104,10 +157,10 @@ const Login = async (req, res) => {
     }
 
     const accessToken = setToken(user);
-    const refreshToken = jwt.sign({ user, role }, process.env.JWT_SECRET || '', { expiresIn: "1d" });
-
+    const refreshToken = jwt.sign({ user, role }, process.env.JWT_SECERET || '', { expiresIn: "1d" });
+  
     res.cookie(process.env.ACCESS_TOKEN, accessToken, { httpOnly: true, secure: true });
-    res.cookie(process.env.REFRESH_TOKEN, refreshToken, { httpOnly: true, secure: true });
+    res.cookie(process.env.REFERESH_TOKEN, refreshToken, { httpOnly: true, secure: true });
 
     return res.status(200).json({ message: "User/Worker logged in successfully", accessToken });
   } catch (error) {
@@ -119,9 +172,9 @@ const Login = async (req, res) => {
 
 const logoutUser = async (req, res) => {
   try {
-    console.log('logout 1 function is called ');
+    console.log('logout  function is called ');
     // Clear the cookie; ensure to match the options used when setting the cookie
-    res.clearCookie('accesstoken', {
+    res.clearCookie('access-token', {
       httpOnly: true, 
       secure: process.env.NODE_ENV === 'production', 
       sameSite: 'Strict', 
@@ -134,7 +187,7 @@ const logoutUser = async (req, res) => {
   }
 };
 const verifyemail = async (req, res) => {
-  const { email, otp } = req.body;
+  const { email, otp ,role} = req.body;
   console.log('Email verification is happening');
 
   try {
@@ -145,7 +198,7 @@ const verifyemail = async (req, res) => {
     }
 
     // Use role from token
-    const Model = req.role === 'worker' ? Worker : User;
+    const Model = role === 'user' ? User : Worker;
 
     const user = await Model.findOne({ email });
     if (!user) {
@@ -191,7 +244,9 @@ const tokencontroller = async (req, res) => {
 }
 const getProfile = async (req, res) => {
   try {
-    const user = await User.findById(req.user).select('-password'); 
+    console.log(req.role);
+    const Model = req.role === 'user' ? User : Worker;
+    const user = await Model.findById(req.user).select('-password'); 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -342,7 +397,7 @@ const getMyFriends = async (req, res) => {
 }
 const getPastBookings = async (req, res) => {
   try {
-    const bookings = await Booking.find({ userId: req.user.id, status: 'completed' });
+    const bookings = await Booking.find({ userId: req.user.id, status: 'completed' },"status problem workerId");
     res.status(200).json(bookings);
   } catch (error) {
     res.status(500).json({ message: 'Server error', error });
@@ -350,45 +405,155 @@ const getPastBookings = async (req, res) => {
 };
 const getUserBookings = async (req, res) => {
   try {
-    const bookings = await Booking.find({ userId: req.user.id, status: 'ongoing' });
-    res.status(200).json(bookings);
+    const bookings = await Booking.find({ userId: req.user, status: 'ongoing' });
+    const modifiedbooking = bookings.map(({ _id, userId, workerId, problem, cost }) => ({
+      _id,
+      userId, workerId,
+      problem,
+      cost,
+    }))
+    
+    res.status(200).json(modifiedbooking);
   } catch (error) {
     res.status(500).json({ message: 'Server error', error });
   }
 };
 const submitReviewToWorker = async (req, res) => {
   try {
-    const { workerId, rating, comment } = req.body;
-
-    const review = new Review({
-      reviewerId: req.user.id,
-      workerId,
-      rating,
-      comment,
-    });
-
-    await review.save();
-    res.status(201).json({ message: 'Review submitted successfully', review });
+    const {  rating, comment } = req.body;
+    const bookingid = req.params.bookingid;
+    const booking = await Booking.findById(bookingid, "workerId");
+    console.log(booking);
+    
+    const worker = await Worker.findById(booking.workerId,"review ratingcnt rating");
+    console.log(worker);
+    
+    worker.review.push(comment);
+    worker.ratingcnt = worker.ratingcnt + 1;
+    worker.rating = (worker.rating + rating) / worker.ratingcnt;
+    await worker.save();
+    res.status(201).json({ message: 'Review submitted successfully', worker });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error });
   }
 };
+
 const chatWithWorker = async (req, res) => {
-  try {
-    
-  } catch (error) {
-    
-  }
-}
+    try {
+        const { message } = req.body;
+      const userId = req.user;
+      const workerId = req.params.workerid;
+        // Validate required fields
+        if (!userId || !workerId || !message) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'userId, workerId, and message are required' 
+            });
+        }
+        console.log('Hello ');
+        
+        // Find an existing chat between user and worker
+        let chat = await Chat.findOne({ userId, workerId });
+
+        // If no chat exists, create a new one
+        if (!chat) {
+            chat = await Chat.create({ userId, workerId, messages: [] });
+        }
+
+        // Add the new message to the chat
+        const newMessage = await Message.create({
+            senderId: userId,
+            receiverId: workerId,
+            message,
+        });
+
+        chat.messages.push(newMessage._id);
+        await chat.save();
+
+        return res.status(200).json({
+            success: true,
+            message: 'Message sent successfully',
+            data: newMessage,
+        });
+    } catch (error) {
+        console.error('Error in chatWithWorker:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Internal server error',
+            error: error.message,
+        });
+    }
+};
+
 const deleteUserAccount = async (req, res) => {
-  try {
-    
-  } catch (error) {
-    
-  }
-}
+    try {
+        const userId = req.user; // Assuming `req.user` is populated by authentication middleware
+
+        if (!userId) {
+            return res.status(400).json({
+                success: false,
+                message: 'User ID is required for account deletion',
+            });
+        }
+
+        // Check if the user exists
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found',
+            });
+        }
+
+        // Optional: Clean up related data (e.g., Bookings, Chats)
+        await Booking.deleteMany({ userId });
+        await Chat.deleteMany({ userId });
+
+        // Delete the user account
+        await User.findByIdAndDelete(userId);
+
+        return res.status(200).json({
+            success: true,
+            message: 'User account deleted successfully',
+        });
+    } catch (error) {
+        console.error('Error in deleteUserAccount:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Internal server error',
+            error: error.message,
+        });
+    }
+};
 const markBookingAsPaid = async (req, res) => {
-  
+  try {
+        const  id  = req.params.bookingid; // Get booking ID from URL params
+
+        // Find the booking by ID
+        const booking = await Booking.findById(id,"paymentStatus date workerId");
+
+        if (!booking) {
+            return res.status(404).json({ success: false, message: 'Booking not found' });
+        }
+
+        // Check if the booking is already marked as paid
+        if (booking.paymentStatus === 'paid') {
+            return res.status(400).json({ success: false, message: 'Booking is already marked as paid' });
+        }
+
+        // Update payment status
+        booking.paymentStatus = 'paid';
+        await booking.save();
+
+        return res.status(200).json({
+            success: true,
+            message: 'Booking marked as paid successfully',
+            data: booking,
+        });
+    } catch (error) {
+        console.error('Error marking booking as paid:', error);
+        return res.status(500).json({ success: false, message: 'Internal server error', error: error.message });
+    }
 }
 
 export { acceptRequest, chatWithWorker, deleteUserAccount, GetAllNotifications, getMyFriends, getPastBookings, getProfile, getUserBookings, googleSignIn, Login, logoutUser, markBookingAsPaid, searchUser, sendRequest, SignUp, submitReviewToWorker, tokencontroller, verifyemail };

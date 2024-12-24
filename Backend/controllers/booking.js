@@ -4,15 +4,18 @@ import { Booking } from "../models/booking.model.js";
  */
 export const createBooking = async (req, res) => {
   try {
-    const { workerId, service, date, time, cost } = req.body;
-
+    const {problem, address, date, time, cost } = req.body;
+    const workerId = req.params.workerid;
+    const service = req.params.service
     const booking = new Booking({
-      userId: req.user.id,
+      userId: req.user,
       workerId,
+      address,
       service,
       date,
       time,
       cost,
+      problem,
       status: 'ongoing',
     });
 
@@ -37,16 +40,20 @@ export const getUserBookings = async (req, res) => {
 
 export const cancelBooking = async (req, res) => {
   try {
-    const { bookingId, reason } = req.body;
-
-    const booking = await Booking.findById(bookingId);
+    const {  reason } = req.body;
+    const bookingid = req.params.bookingid;
+    const booking = await Booking.findById(bookingid ,"problem cancellationReason status");
 
     if (!booking) {
       return res.status(404).json({ message: 'Booking not found' });
     }
 
+    if (booking.status === 'cancelled') {
+      return res.status(404).json({message:"Booknig already cancelled"})
+    }
     booking.status = 'cancelled';
     booking.cancellationReason = reason;
+
     await booking.save();
 
     res.status(200).json({ message: 'Booking cancelled successfully', booking });
@@ -59,7 +66,7 @@ export const cancelBooking = async (req, res) => {
  */
 export const completeBooking = async (req, res) => {
   try {
-    const { bookingId } = req.body;
+    const bookingId  = req.params.bookingid;
 
     const booking = await Booking.findById(bookingId);
 

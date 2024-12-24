@@ -12,10 +12,11 @@ const cookieopt = {
 export const setToken = (user) => {
     const token = jwt.sign(
         {
+            role:user.role,
             userId: user._id,
-            email: user.email,
+            
         }, process.env.JWT_SECERET, {
-        expiresIn: '10m'
+        expiresIn: '1h'
     });
 
     return token;
