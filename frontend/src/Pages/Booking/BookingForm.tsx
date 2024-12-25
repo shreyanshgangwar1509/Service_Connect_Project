@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { Calendar } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
+import "react-datepicker/dist/react-datepicker.css";
+import ReactDatePicker from "react-datepicker";
 
 // Interface for component props
 interface BookingFormProps {
@@ -37,11 +39,11 @@ interface GeolocationCoordinates {
 
 // Main Component
 const BookingForm: React.FC<BookingFormProps> = ({ service, charges }) => {
-  const [currentService, setCurrentService] = useState<string>(service || '');
-  const [address, setAddress] = useState<string>('');
-  const [currentAddress, setCurrentAddress] = useState<string>('');
-  const [isEditable, setIsEditable] = useState<boolean>(false);
-  const [date, setDate] = useState<string>('');
+  const [currentService, setCurrentService] = useState(service || '');
+  const [address, setAddress] = useState('');
+  const [currentAddress, setCurrentAddress] = useState('');
+  const [isEditable, setIsEditable] = useState(false);
+  const [date, setDate] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [total, setTotal] = useState<number>(charges || 0);
 
@@ -110,7 +112,6 @@ const BookingForm: React.FC<BookingFormProps> = ({ service, charges }) => {
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     if (!currentService || !address || !date) {
       setError('Please fill out all fields before submitting.');
       return;
@@ -146,6 +147,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ service, charges }) => {
     setCurrentService(service || '');
     setAddress(currentAddress);
     setDate('');
+    setTime('');
     setIsEditable(false);
     setError(null);
   };
@@ -198,7 +200,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ service, charges }) => {
 
         {/* Date Input */}
         <div className="mb-6">
-          <div className="m-2 flex items-center flex-row gap-2">
+          <div className='m-2 flex items-center flex-row gap-2'>
             <label className="block text-gray-700 font-medium mb-2">Date</label>
             <Calendar />
           </div>
@@ -208,7 +210,20 @@ const BookingForm: React.FC<BookingFormProps> = ({ service, charges }) => {
             onChange={(e) => setDate(e.target.value)}
             className="w-full p-2 border rounded bg-white"
             required
-          />
+          >
+            <option value="">Select a time slot</option>
+            {Array.from({ length: 13 }, (_, i) => {
+              const startHour = 9 + i;
+              const endHour = startHour + 1;
+              const startLabel = startHour > 12 ? `${startHour - 12} PM` : `${startHour} AM`;
+              const endLabel = endHour > 12 ? `${endHour - 12} PM` : `${endHour} AM`;
+              return (
+                <option key={i} value={`${startLabel} - ${endLabel}`}>
+                  {`${startLabel} - ${endLabel}`}
+                </option>
+              );
+            })}
+          </select>
         </div>
 
         {/* Price Display */}
