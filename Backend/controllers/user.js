@@ -555,6 +555,45 @@ const markBookingAsPaid = async (req, res) => {
         return res.status(500).json({ success: false, message: 'Internal server error', error: error.message });
     }
 }
+const getRecommendations = async (req, res) => {
+  try {
+    const { serviceType, budget, urgency } = req.body;
 
-export { acceptRequest, chatWithWorker, deleteUserAccount, GetAllNotifications, getMyFriends, getPastBookings, getProfile, getUserBookings, googleSignIn, Login, logoutUser, markBookingAsPaid, searchUser, sendRequest, SignUp, submitReviewToWorker, tokencontroller, verifyemail };
+    // Simple recommendation logic
+    const professionals = await Worker.find({
+      services: serviceType,
+      budgetRange: { $lte: budget },
+      responseTime: urgency,
+    }).sort({ rating: -1 });
+
+    res.status(200).json({ success: true, data: professionals });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Server Error' });
+  }
+};
+const handleVoiceBooking = async (req, res) => {
+  const { service, date } = req.body;
+
+  try {
+    // Mock booking logic
+    console.log(`Booking service: ${service} on ${date}`);
+    res.status(200).json({ success: true, message: `${service} booked for ${date}` });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Failed to book service' });
+  }
+};
+const getRecommend = (req, res) => {
+  const { detectedIssue } = req.body;
+
+  const recommendations = {
+    "AC_Damage": "Schedule an AC repair service.",
+    "Fridge_Leakage": "Book a fridge technician.",
+    "WashingMachine_Fault": "Washing machine service is recommended."
+  };
+
+  const suggestion = recommendations[detectedIssue] || "No recommendation available.";
+  res.status(200).json({ success: true, suggestion });
+};
+export { acceptRequest, chatWithWorker, deleteUserAccount, GetAllNotifications, getMyFriends, getPastBookings, getProfile, getRecommend, getRecommendations, getUserBookings, googleSignIn, handleVoiceBooking, Login, logoutUser, markBookingAsPaid, searchUser, sendRequest, SignUp, submitReviewToWorker, tokencontroller, verifyemail };
 

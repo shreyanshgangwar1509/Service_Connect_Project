@@ -158,6 +158,7 @@ const getWorkerLocation = async (req, res) => {
     res.status(500).json({ message: 'Server error', error });
   }
 };
+
 export const getWorkerBookings = async (req, res) => {
   try {
     const bookings = await Booking.find({ workerId: req.user.id, status: 'ongoing' });
@@ -166,4 +167,40 @@ export const getWorkerBookings = async (req, res) => {
     res.status(500).json({ message: 'Server error', error });
   }
 };
-export default { getWorkerBookings,workerProfile,CurrentBooking,PastBookings,WorkerPortfolio,AddOnCostOfMaterial,ChatWithUser, DeleteMyAccount,updateWorkerLocation,getWorkerBookings,getWorkerLocation };
+const getAllProviders = async (req, res) => {
+    try {
+        const { service } = req.params; // Service from URL params
+        const { longitude, latitude } = req.query; // Coordinates from query params
+
+        if (!longitude || !latitude) {
+            return res.status(400).json({ error: "Longitude and latitude are required." });
+        }
+        const lng = parseFloat(longitude );
+        const lat = parseFloat(latitude );
+
+        const workers = await Worker.find({
+            services: service,
+            available: true,
+        })
+        .near('location', {
+            center: { type: 'Point', coordinates: [lng, lat] },
+            maxDistance: 40000,
+        })
+        .select('name avatar.url location.coordinates rating'); // Select specific fields
+
+        // Check if workers found
+        if (!workers.length) {
+            return res.status(404).json({ message: "No providers found for the given service and location." });
+        }
+
+        // Send response
+        res.status(200).json({
+            success: true,
+            data: workers,
+        });
+    } catch (error) {
+        console.error("Error fetching providers:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+export default { getAllProviders,getWorkerBookings,workerProfile,CurrentBooking,PastBookings,WorkerPortfolio,AddOnCostOfMaterial,ChatWithUser, DeleteMyAccount,updateWorkerLocation,getWorkerBookings,getWorkerLocation };

@@ -31,6 +31,7 @@ router.post('/chat/:userId', worker.ChatWithUser);
 /**
  * Location Routes
  */
+router.get('/:service', getallProvider);
 router.put('/location', worker.updateWorkerLocation);
 router.get('/location/:id', worker.getWorkerLocation);
 

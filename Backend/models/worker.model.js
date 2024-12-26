@@ -42,6 +42,7 @@ const workerSchema = new Schema({
             default: [0, 0],
         },
     },
+    
     available: {
         type: Boolean,
         default: true, // Default value added
