@@ -6,8 +6,8 @@ function BookPage() {
   const location = useLocation();
   const { service, price } = location.state || {}; 
 
-  // console.log("Service:", service); 
-  // console.log("Charges:", price); 
+  console.log("Service:", service); 
+  console.log("Charges:", price); 
 
   return (
     <div>

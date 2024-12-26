@@ -1,13 +1,11 @@
 import axios from 'axios';
-import { Calendar } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import "react-datepicker/dist/react-datepicker.css";
-import ReactDatePicker from "react-datepicker";
+import 'react-datepicker/dist/react-datepicker.css';
 
 // Interface for component props
 interface BookingFormProps {
   service: string;
-  charges: number; // Ensure charges is passed as a numeric value
+  charges: number;
 }
 
 // Interface for Razorpay options
@@ -37,7 +35,6 @@ interface GeolocationCoordinates {
   longitude: number;
 }
 
-// Main Component
 const BookingForm: React.FC<BookingFormProps> = ({ service, charges }) => {
   const [currentService, setCurrentService] = useState(service || '');
   const [address, setAddress] = useState('');
@@ -49,12 +46,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ service, charges }) => {
 
   // Update total if charges change
   useEffect(() => {
-    if (typeof charges === 'number') {
-      setTotal(charges);
-    } else {
-      const numericCharges = parseFloat(String(charges).replace(/[^0-9.]/g, ''));
-      setTotal(isNaN(numericCharges) ? 0 : numericCharges);
-    }
+    setTotal(Number(charges) || 0);
   }, [charges]);
 
   // Fetch current location
@@ -66,9 +58,8 @@ const BookingForm: React.FC<BookingFormProps> = ({ service, charges }) => {
           const response = await axios.get(
             `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
           );
-          const fetchedAddress: string = response.data.display_name;
-          setCurrentAddress(fetchedAddress);
-          setAddress(fetchedAddress);
+          setCurrentAddress(response.data.display_name);
+          setAddress(response.data.display_name);
         } catch (err) {
           setError('Failed to fetch address. Please try again.');
         }
@@ -77,17 +68,11 @@ const BookingForm: React.FC<BookingFormProps> = ({ service, charges }) => {
     );
   }, []);
 
-  // Handle checkbox for editable address
   const handleCheckboxChange = () => {
     setIsEditable(!isEditable);
-    if (!isEditable) {
-      setAddress('');
-    } else {
-      setAddress(currentAddress);
-    }
+    setAddress(isEditable ? currentAddress : '');
   };
 
-  // Load Razorpay script dynamically
   const loadScript = (src: string): Promise<void> => {
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');
@@ -98,7 +83,6 @@ const BookingForm: React.FC<BookingFormProps> = ({ service, charges }) => {
     });
   };
 
-  // Display Razorpay modal
   const displayRazorpay = async (options: RazorpayOptions): Promise<void> => {
     try {
       await loadScript('https://checkout.razorpay.com/v1/checkout.js');
@@ -109,7 +93,6 @@ const BookingForm: React.FC<BookingFormProps> = ({ service, charges }) => {
     }
   };
 
-  // Handle form submission
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!currentService || !address || !date) {
@@ -117,20 +100,12 @@ const BookingForm: React.FC<BookingFormProps> = ({ service, charges }) => {
       return;
     }
 
-    if (total <= 0) {
-      setError('Invalid service charges. Please contact support.');
-      return;
-    }
-
-    const amountInPaise = Math.round(total * 100);
-
     const options: RazorpayOptions = {
       key: 'rzp_test_YsmTMZihOBVTve',
-      amount: amountInPaise,
+      amount: Math.round(total * 100),
       currency: 'INR',
       name: 'Service Connect',
       description: `Booking for ${currentService}`,
-      image: 'https://your-logo-url.com',
       handler: (response: RazorpayResponse) => {
         alert('Payment successful! Payment ID: ' + response.razorpay_payment_id);
       },
@@ -142,101 +117,55 @@ const BookingForm: React.FC<BookingFormProps> = ({ service, charges }) => {
     };
 
     await displayRazorpay(options);
-
-    // Reset form fields
-    setCurrentService(service || '');
-    setAddress(currentAddress);
-    setDate('');
-    setTime('');
-    setIsEditable(false);
-    setError(null);
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-8 rounded-lg shadow-md w-full max-w-md"
+      >
         <h2 className="text-2xl font-bold mb-6 text-center">Book a Service</h2>
 
         {error && <p className="text-red-500 mb-4">{error}</p>}
 
         {/* Service Input */}
-        <div className="mb-4">
-          <label className="block text-gray-700 font-medium mb-2">Service</label>
-          <input
-            type="text"
-            value={currentService}
-            onChange={(e) => setCurrentService(e.target.value)}
-            placeholder="Enter your service"
-            className="w-full p-2 border rounded bg-white"
-            required
-          />
-        </div>
+        <label>Service</label>
+        <input
+          type="text"
+          value={currentService}
+          onChange={(e) => setCurrentService(e.target.value)}
+          placeholder="Enter your service"
+          className="w-full p-2 border rounded mb-4 bg-white"
+          required
+        />
 
         {/* Address Input */}
-        <div className="mb-4">
-          <label className="block text-gray-700 font-medium mb-2">Address</label>
-          <input
-            type="text"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            disabled={!isEditable}
-            placeholder="Enter your address"
-            className={`w-full p-2 border rounded ${isEditable ? 'bg-white' : 'bg-gray-200'}`}
-            required
-          />
-          <div className="mt-2 flex items-center bg-white">
-            <input
-              type="checkbox"
-              id="editAddress"
-              checked={isEditable}
-              onChange={handleCheckboxChange}
-              className="mr-2 bg-white"
-            />
-            <label htmlFor="editAddress" className="text-sm text-gray-600">
-              I want to change my address
-            </label>
-          </div>
-        </div>
+        <label>Address</label>
+        <input
+          type="text"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+          disabled={!isEditable}
+          className="w-full p-2 border rounded mb-4"
+        />
+        <input type="checkbox" checked={isEditable} onChange={handleCheckboxChange} /> Edit Address
 
-        {/* Date Input */}
-        <div className="mb-6">
-          <div className='m-2 flex items-center flex-row gap-2'>
-            <label className="block text-gray-700 font-medium mb-2">Date</label>
-            <Calendar />
-          </div>
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            className="w-full p-2 border rounded bg-white"
-            required
-          >
-            <option value="">Select a time slot</option>
-            {Array.from({ length: 13 }, (_, i) => {
-              const startHour = 9 + i;
-              const endHour = startHour + 1;
-              const startLabel = startHour > 12 ? `${startHour - 12} PM` : `${startHour} AM`;
-              const endLabel = endHour > 12 ? `${endHour - 12} PM` : `${endHour} AM`;
-              return (
-                <option key={i} value={`${startLabel} - ${endLabel}`}>
-                  {`${startLabel} - ${endLabel}`}
-                </option>
-              );
-            })}
-          </select>
-        </div>
+        {/* Date Picker */}
+        <label>Date</label>
+        <input
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+          className="w-full p-2 border rounded mb-4 bg-white"
+          required
+        />
 
-        {/* Price Display */}
-        <div className="mb-4">
-          <label className="block text-gray-700 font-medium mb-2">Price</label>
-          <p className="text-lg text-gray-900">₹{total} INR</p>
-        </div>
+        {/* Price */}
+        <p>Price: ₹{total} INR</p>
 
         {/* Submit Button */}
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition duration-300"
-        >
+        <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded">
           Book Now - ₹{total} INR
         </button>
       </form>

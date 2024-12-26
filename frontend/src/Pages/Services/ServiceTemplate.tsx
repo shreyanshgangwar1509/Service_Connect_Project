@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 interface Worker {
   id: string;
   name: string;
-  charges: string;
+  charges: number;
   rating: number;
 }
 
@@ -66,7 +66,7 @@ function ServiceTemplate({ serviceName, dummyData }: { serviceName: string; dumm
             <Card key={worker.id} className="p-4 shadow-md rounded-lg flex flex-col justify-between">
               <div>
                 <h2 className="text-xl font-semibold mb-2">{worker.name}</h2>
-                <p className="text-gray-600 mb-1">Charges: {worker.charges}</p>
+                <p className="text-gray-600 mb-1">Charges: {worker.charges} </p>
                 <p className="text-yellow-500 mb-4">Rating: {worker.rating} ⭐</p>
               </div>
               <div className="flex justify-end gap-2 mt-auto">
@@ -95,11 +95,11 @@ export const Painting = () => (
   <ServiceTemplate
     serviceName="Painting"
     dummyData={[
-      { id: "1", name: "John Doe", charges: "₹500/hr", rating: 4.5 },
-      { id: "2", name: "Jane Smith", charges: "₹450/hr", rating: 4.8 },
-      { id: "3", name: "Bob Williams", charges: "₹550/hr", rating: 4.2 },
-      { id: "4", name: "Alice Johnson", charges: "₹600/hr", rating: 4.9 },
-      { id: "5", name: "Charlie Brown", charges: "₹400/hr", rating: 4.0 },
+      { id: "1", name: "John Doe", charges: 500, rating: 4.5 },
+      { id: "2", name: "Jane Smith", charges: 450, rating: 4.8 },
+      { id: "3", name: "Bob Williams", charges: 550, rating: 4.2 },
+      { id: "4", name: "Alice Johnson", charges: 600, rating: 4.9 },
+      { id: "5", name: "Charlie Brown", charges: 400, rating: 4.0 },
     ]}
   />
 );
@@ -108,9 +108,9 @@ export const CarRepair = () => (
   <ServiceTemplate
     serviceName="Car Repair"
     dummyData={[
-      { id: "1", name: "John Mechanic", charges: "₹800/hr", rating: 4.7 },
-      { id: "2", name: "Jane Mechanic", charges: "₹750/hr", rating: 4.6 },
-      { id: "3", name: "Bob Fixer", charges: "₹900/hr", rating: 4.8 },
+      { id: "1", name: "John Mechanic", charges: 800, rating: 4.7 },
+      { id: "2", name: "Jane Mechanic", charges: 750, rating: 4.6 },
+      { id: "3", name: "Bob Fixer", charges: 900, rating: 4.8 },
     ]}
   />
 );
@@ -119,9 +119,9 @@ export const Electronics = () => (
   <ServiceTemplate
     serviceName="Electronics"
     dummyData={[
-      { id: "1", name: "Gadget Guru", charges: "₹700/hr", rating: 4.5 },
-      { id: "2", name: "Device Doctor", charges: "₹650/hr", rating: 4.8 },
-      { id: "3", name: "Tech Fixer", charges: "₹800/hr", rating: 4.4 },
+      { id: "1", name: "Gadget Guru", charges: 700, rating: 4.5 },
+      { id: "2", name: "Device Doctor", charges: 650, rating: 4.8 },
+      { id: "3", name: "Tech Fixer", charges: 800, rating: 4.4 },
     ]}
   />
 );
@@ -130,9 +130,9 @@ export const EventManagement = () => (
   <ServiceTemplate
     serviceName="Event Management"
     dummyData={[
-      { id: "1", name: "Event Expert", charges: "₹1500/hr", rating: 4.9 },
-      { id: "2", name: "Celebration Pro", charges: "₹1300/hr", rating: 4.8 },
-      { id: "3", name: "Occasion Manager", charges: "₹1400/hr", rating: 4.7 },
+      { id: "1", name: "Event Expert", charges: 500, rating: 4.9 },
+      { id: "2", name: "Celebration Pro", charges: 300, rating: 4.8 },
+      { id: "3", name: "Occasion Manager", charges: 400, rating: 4.7 },
     ]}
   />
 );
@@ -141,9 +141,9 @@ export const HomeCleaning = () => (
   <ServiceTemplate
     serviceName="Home Cleaning"
     dummyData={[
-      { id: "1", name: "Clean Genie", charges: "₹300/hr", rating: 4.9 },
-      { id: "2", name: "Spotless Pro", charges: "₹350/hr", rating: 4.7 },
-      { id: "3", name: "Dust Buster", charges: "₹400/hr", rating: 4.6 },
+      { id: "1", name: "Clean Genie", charges: 300, rating: 4.9 },
+      { id: "2", name: "Spotless Pro", charges: 350, rating: 4.7 },
+      { id: "3", name: "Dust Buster", charges: 400, rating: 4.6 },
     ]}
   />
 );
@@ -152,9 +152,9 @@ export const Laundry = () => (
   <ServiceTemplate
     serviceName="Laundry"
     dummyData={[
-      { id: "1", name: "Wash Wizard", charges: "₹150/load", rating: 4.8 },
-      { id: "2", name: "Laundry Expert", charges: "₹180/load", rating: 4.7 },
-      { id: "3", name: "Fabric Cleaner", charges: "₹200/load", rating: 4.6 },
+      { id: "1", name: "Wash Wizard", charges: 150, rating: 4.8 },
+      { id: "2", name: "Laundry Expert", charges: 180, rating: 4.7 },
+      { id: "3", name: "Fabric Cleaner", charges: 200, rating: 4.6 },
     ]}
   />
 );
@@ -163,9 +163,9 @@ export const Maids = () => (
   <ServiceTemplate
     serviceName="Maids"
     dummyData={[
-      { id: "1", name: "Daily Helper", charges: "₹250/hr", rating: 4.8 },
-      { id: "2", name: "House Assistant", charges: "₹300/hr", rating: 4.7 },
-      { id: "3", name: "Home Aid", charges: "₹280/hr", rating: 4.6 },
+      { id: "1", name: "Daily Helper", charges: 250, rating: 4.8 },
+      { id: "2", name: "House Assistant", charges: 300, rating: 4.7 },
+      { id: "3", name: "Home Aid", charges: 280, rating: 4.6 },
     ]}
   />
 );
@@ -174,9 +174,9 @@ export const Plumbing = () => (
   <ServiceTemplate
     serviceName="Plumbing"
     dummyData={[
-      { id: "1", name: "Pipe Expert", charges: "₹500/hr", rating: 4.8 },
-      { id: "2", name: "Leak Fixer", charges: "₹450/hr", rating: 4.7 },
-      { id: "3", name: "Drain Master", charges: "₹550/hr", rating: 4.6 },
+      { id: "1", name: "Pipe Expert", charges: 500, rating: 4.8 },
+      { id: "2", name: "Leak Fixer", charges: 450, rating: 4.7 },
+      { id: "3", name: "Drain Master", charges: 550, rating: 4.6 },
     ]}
   />
 );
@@ -185,9 +185,9 @@ export const Salon = () => (
   <ServiceTemplate
     serviceName="Salon"
     dummyData={[
-      { id: "1", name: "Beauty Pro", charges: "₹700/session", rating: 4.9 },
-      { id: "2", name: "Style Expert", charges: "₹800/session", rating: 4.8 },
-      { id: "3", name: "Makeover Guru", charges: "₹750/session", rating: 4.7 },
+      { id: "1", name: "Beauty Pro", charges: 700, rating: 4.9 },
+      { id: "2", name: "Style Expert", charges: 800, rating: 4.8 },
+      { id: "3", name: "Makeover Guru", charges: 750, rating: 4.7 },
     ]}
   />
 );
