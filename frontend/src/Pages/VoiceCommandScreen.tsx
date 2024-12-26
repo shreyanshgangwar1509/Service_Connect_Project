@@ -1,5 +1,3 @@
-'use client';
-
 import axios from 'axios';
 import { useState } from 'react';
 import { FaMicrophone } from 'react-icons/fa'; // Voice Icon
@@ -10,7 +8,15 @@ const VoiceCommand = () => {
   const [isListening, setIsListening] = useState(false);
 
   const startListening = () => {
-    const recognition = new (window.SpeechRecognition || (window as any).webkitSpeechRecognition)();
+    const SpeechRecognition =
+      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      setResponse('Speech recognition is not supported in your browser.');
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
     recognition.lang = 'en-US';
     recognition.interimResults = true; // Enable real-time transcription
     recognition.start();
@@ -20,8 +26,9 @@ const VoiceCommand = () => {
       let interimTranscript = '';
       for (let i = event.resultIndex; i < event.results.length; i++) {
         if (event.results[i].isFinal) {
-          setCommand(event.results[i][0].transcript);
-          handleCommand(event.results[i][0].transcript);
+          const finalTranscript = event.results[i][0].transcript;
+          setCommand(finalTranscript);
+          handleCommand(finalTranscript);
         } else {
           interimTranscript += event.results[i][0].transcript;
         }
@@ -54,14 +61,19 @@ const VoiceCommand = () => {
       gardening: 'Gardening',
     };
 
-    const matchedService = Object.keys(serviceMap).find((service) => command.toLowerCase().includes(service));
+    const matchedService = Object.keys(serviceMap).find((service) =>
+      command.toLowerCase().includes(service)
+    );
 
     if (matchedService) {
       try {
-        const result = await axios.post(`${import.meta.env.BACKEND_URL}/api/user/book`, {
-          service: serviceMap[matchedService],
-          date: 'Tomorrow',
-        });
+        const result = await axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/api/user/book`,
+          {
+            service: serviceMap[matchedService],
+            date: 'Tomorrow',
+          }
+        );
         setResponse(`${serviceMap[matchedService]} booked for tomorrow!`);
         speak(`${serviceMap[matchedService]} booked successfully for tomorrow!`);
       } catch (error) {
@@ -71,6 +83,7 @@ const VoiceCommand = () => {
       }
     } else {
       speak('Sorry, I did not understand the service you want to book.');
+      setResponse('Service not recognized. Please try again.');
     }
   };
 
