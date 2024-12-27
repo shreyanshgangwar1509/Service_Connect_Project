@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 // Interface for component props
@@ -40,9 +41,23 @@ const BookingForm: React.FC<BookingFormProps> = ({ service, charges }) => {
   const [address, setAddress] = useState('');
   const [currentAddress, setCurrentAddress] = useState('');
   const [isEditable, setIsEditable] = useState(false);
-  const [date, setDate] = useState('');
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [time, setTime] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [total, setTotal] = useState<number>(charges || 0);
+
+  // Generate time slots
+  const generateTimeSlots = (): string[] => {
+    const slots: string[] = [];
+    for (let hour = 9; hour < 21; hour++) {
+      const start = `${hour}am - ${hour + 1}am`;
+      slots.push(start);
+    }
+    slots.push("9pm - 10pm");
+    return slots;
+  };
+
+  const timeSlots = generateTimeSlots();
 
   // Update total if charges change
   useEffect(() => {
@@ -95,7 +110,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ service, charges }) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!currentService || !address || !date) {
+    if (!currentService || !address || !selectedDate || !time) {
       setError('Please fill out all fields before submitting.');
       return;
     }
@@ -123,48 +138,75 @@ const BookingForm: React.FC<BookingFormProps> = ({ service, charges }) => {
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-lg shadow-md w-full max-w-md"
+        className="bg-white p-8 rounded-lg shadow-md w-full max-w-md space-y-6"
       >
-        <h2 className="text-2xl font-bold mb-6 text-center">Book a Service</h2>
+        <h2 className="text-2xl font-bold text-center">Book a Service</h2>
 
-        {error && <p className="text-red-500 mb-4">{error}</p>}
+        {error && <p className="text-red-500">{error}</p>}
 
-        {/* Service Input */}
-        <label>Service</label>
-        <input
-          type="text"
-          value={currentService}
-          onChange={(e) => setCurrentService(e.target.value)}
-          placeholder="Enter your service"
-          className="w-full p-2 border rounded mb-4 bg-white"
-          required
-        />
+        <div className="flex flex-col space-y-2">
+          <label>Service</label>
+          <input
+            type="text"
+            value={currentService}
+            onChange={(e) => setCurrentService(e.target.value)}
+            placeholder="Enter your service"
+            className="w-full p-2 border rounded bg-white"
+            required
+          />
+        </div>
 
-        {/* Address Input */}
-        <label>Address</label>
-        <input
-          type="text"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          disabled={!isEditable}
-          className="w-full p-2 border rounded mb-4"
-        />
-        <input type="checkbox" checked={isEditable} onChange={handleCheckboxChange} /> Edit Address
+        <div className="flex flex-col space-y-2">
+          <label>Address</label>
+          <input
+            type="text"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            disabled={!isEditable}
+            className="w-full bg-white text-black p-2 border rounded"
+          />
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              checked={isEditable}
+              onChange={handleCheckboxChange}
+            />
+            <span>Edit Address</span>
+          </label>
+        </div>
 
-        {/* Date Picker */}
-        <label>Date</label>
-        <input
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          className="w-full p-2 border rounded mb-4 bg-white"
-          required
-        />
+        <div className="flex flex-col space-y-2">
+          <label>Date</label>
+          <DatePicker
+            selected={selectedDate}
+            onChange={(date) => setSelectedDate(date)}
+            className="w-full p-2 border rounded bg-white"
+            placeholderText="Select a date"
+            dateFormat="dd/MM/yyyy"
+            minDate={new Date()}
+            required
+          />
+        </div>
 
-        {/* Price */}
-        <p>Price: ₹{total} INR</p>
+        <div className="flex flex-col space-y-2">
+          <label>Time</label>
+          <select
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
+            className="w-full p-2 border rounded bg-white"
+            required
+          >
+            <option value="">Select Time</option>
+            {timeSlots.map((slot) => (
+              <option key={slot} value={slot}>
+                {slot}
+              </option>
+            ))}
+          </select>
+        </div>
 
-        {/* Submit Button */}
+        <p className="text-lg font-semibold">Price: ₹{total} INR</p>
+
         <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded">
           Book Now - ₹{total} INR
         </button>
