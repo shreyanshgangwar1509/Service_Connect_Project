@@ -112,38 +112,18 @@ function Chat() {
                
                
                     {/* <!-- Chat Input --> */}
-                    <footer className="bg-white border-t border-gray-300 p-4 absolute bottom-0 w-3/4">
+                    
                         <div className="flex items-center">
-                            <input type="text" placeholder="Type a message..." className="w-full p-2 rounded-md border border-gray-400 focus:outline-none focus:border-blue-500" />
+                            <input type="text" placeholder="Type a message..." className="bg-white w-full p-2 rounded-md border border-gray-400 focus:outline-none focus:border-blue-500" />
                             <button className="bg-indigo-500 text-white px-4 py-2 rounded-md ml-2">Send</button>
                         </div>
-                    </footer>
+                    
                 </div>
             </div>
         </div>
     )
 }
-    {/* <script>
-      // JavaScript for showing/hiding the menu
-      const menuButton = document.getElementById('menuButton');
-      const menuDropdown = document.getElementById('menuDropdown');
-      
-      menuButton.addEventListener('click', () => {
-        if (menuDropdown.classNameList.contains('hidden')) {
-          menuDropdown.classNameList.remove('hidden');
-        } else {
-          menuDropdown.classNameList.add('hidden');
-        }
-      });
-      
-      // Close the menu if you click outside of it
-      document.addEventListener('click', (e) => {
-        if (!menuDropdown.contains(e.target) && !menuButton.contains(e.target)) {
-          menuDropdown.classNameList.add('hidden');
-        }
-      });
-    </script> */}
-  
+    
 
 
 export default Chat

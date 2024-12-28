@@ -99,7 +99,7 @@ const workerSchema = new Schema({
         moneyManagement: {
             monthly: [
                 {
-                    month: { type: String, required: true }, // e.g., 'January', 'February'
+                    month: { type: String, required: true },
                     income: { type: Number, default: 0 },
                     expenses: { type: Number, default: 0 },
                     savings: { type: Number, default: 0 }
@@ -107,7 +107,7 @@ const workerSchema = new Schema({
             ],
             yearly: [
                 {
-                    year: { type: Number, required: true }, // e.g., 2024
+                    year: { type: Number, required: true }, 
                     totalIncome: { type: Number, default: 0 },
                     totalExpenses: { type: Number, default: 0 },
                     totalSavings: { type: Number, default: 0 }

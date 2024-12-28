@@ -1,4 +1,3 @@
-
 import * as mobilenet from '@tensorflow-models/mobilenet';
 import * as tf from '@tensorflow/tfjs';
 import React, { useEffect, useRef, useState } from 'react';
@@ -7,6 +6,7 @@ import ResultScreen from './ResultScreen';
 const ARScanner: React.FC = () => {
   const [model, setModel] = useState<mobilenet.MobileNet | null>(null);
   const [predictions, setPredictions] = useState<string | null>(null);
+  const [isDetecting, setIsDetecting] = useState<boolean>(false);
   const webcamRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -75,14 +75,34 @@ const ARScanner: React.FC = () => {
 
     // Stop camera when issue is detected
     if (predictions.length > 0 && predictions[0].probability > 0.6) {
-      stopCamera(); 
+      stopCamera();
+      setIsDetecting(false); // Stop detection
     }
   };
 
+  // Trigger predictions when `isDetecting` is true
   useEffect(() => {
-      handlePrediction()
-    stopCamera();
-  }, [model]);
+    let interval: NodeJS.Timeout;
+    if (isDetecting) {
+      interval = setInterval(() => {
+        handlePrediction();
+      }, 1000); // Run every second
+    } else {
+      clearInterval(interval);
+    }
+
+    return () => clearInterval(interval);
+  }, [isDetecting]);
+
+  // Toggle Detection State
+  const toggleDetection = () => {
+    if (!isDetecting) {
+      setIsDetecting(true);
+    } else {
+      stopCamera();
+      setIsDetecting(false);
+    }
+  };
 
   return (
     <div className="relative w-80 h-80 mx-auto mt-10 border border-gray-400 rounded-lg overflow-hidden shadow-lg bg-black">
@@ -111,6 +131,14 @@ const ARScanner: React.FC = () => {
           'Point your camera at the issue'
         )}
       </div>
+
+      {/* Detect Button */}
+      <button
+        onClick={toggleDetection}
+        className="absolute top-2 right-2 bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md"
+      >
+        {isDetecting ? 'Stop Detection' : 'Start Detection'}
+      </button>
     </div>
   );
 };
