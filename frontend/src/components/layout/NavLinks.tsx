@@ -33,6 +33,7 @@ export function NavLinks({ className = '' }: NavLinksProps) {
       <Button variant="ghost" onClick={()=>navigate('/become-provider')}>Become a Provider</Button>
       <Button variant="ghost" onClick={() => navigate('/inventory')}>Inventory</Button>
       <Button variant='ghost' onClick={()=>navigate('/recommendation')}>Recommendation</Button>
+      <Button variant='ghost' onClick={()=>navigate('/HomeWorker')}>Worker</Button>
       {logged ? (
         <>
           <Button variant="ghost" onClick={()=>navigate('/profile')}>
