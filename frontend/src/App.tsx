@@ -16,6 +16,7 @@ import ARScanner from "./components/ARScanner";
 import GetHiredPage from "./components/GetHired/page";
 import BookingsPage from "./Pages/Booking/BookingsPage";
 import MyBookings from "./Pages/Booking/MyBookings";
+import Chat from "./Pages/ChatBot/Chat";
 import Inventory from "./Pages/Inventory";
 import Profile from "./Pages/Profile";
 import RecommendationPage from "./Pages/Recommendation";
@@ -105,6 +106,7 @@ function App() {
           <Route path="/become-provider" element={<GetHiredPage />} />
           <Route path="/chatbot" element={<ChatBot />} />
           <Route path="/location-tracking" element={<Map />} />
+          <Route path='/chat' element={<Chat/>}/>
           {/* Service Routes */}
           <Route path="/chat" element={<Chat />} />
           <Route path="/plumbing" element={<Plumbing />} />
@@ -120,7 +122,8 @@ function App() {
           <Route path="/bookings" element={<BookingsPage/>}/>
           <Route path="/inventory" element={<Inventory />} />
           <Route path="/recommendation" element={<RecommendationPage />} />
-          <Route path="/ar" element={<ARScanner/>}/>
+          <Route path="/ar" element={<ARScanner />} />
+          <Route path="/map" element={<Map/>}/>
           {/* Admin and Worker Routes */}
           <Route element={<AdminRoute />}>
             <Route path="/admin-panel" element={<Admin />} />
@@ -135,7 +138,9 @@ function App() {
             <Route path="/analytics" />
           </Route>
         </Routes>
+        <ChatBot/>
         <Footer />
+       
       </Router>
     </div>
   );

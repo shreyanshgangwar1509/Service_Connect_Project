@@ -55,10 +55,13 @@ const BookingForm: React.FC<BookingFormProps> = ({ service, charges }) => {
       async (position: { coords: GeolocationCoordinates }) => {
         const { latitude, longitude } = position.coords;
         try {
-          const response = await axios.get(
-            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
-          );
-          setCurrentAddress(response.data.display_name);
+          // const response = await axios.get(
+          //   `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+          // );
+          const response = await axios.get(`https://us1.locationiq.com/v1/reverse?key=pk.b4a303b7b66882730107e84e467e2916&lat=${latitude}&lon=${longitude}&format=json&`)
+          console.log(response);
+          
+          setCurrentAddress(response.data.city);
           setAddress(response.data.display_name);
         } catch (err) {
           setError('Failed to fetch address. Please try again.');
@@ -147,7 +150,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ service, charges }) => {
           value={address}
           onChange={(e) => setAddress(e.target.value)}
           disabled={!isEditable}
-          className="w-full p-2 border rounded mb-4"
+          className="bg-white w-full p-2 border rounded mb-4"
         />
         <input type="checkbox" checked={isEditable} onChange={handleCheckboxChange} /> Edit Address
 

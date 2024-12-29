@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Chat from "../ChatBot/Chat";
+// import chat from "../ChatBot/Chat";
 
 interface Worker {
   id: string;
