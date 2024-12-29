@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Chat from "../ChatBot/Chat";
 
 interface Worker {
   id: string;
@@ -76,9 +77,12 @@ function ServiceTemplate({ serviceName, dummyData }: { serviceName: string; dumm
                 >
                   Book Now
                 </button>
-                <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
-                  Chat
-                </button>
+               <button
+  className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
+  onClick={() => navigate("/chat")}
+>
+  Chat
+</button>
               </div>
             </Card>
           ))}
