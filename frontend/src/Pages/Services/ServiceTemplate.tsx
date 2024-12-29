@@ -40,10 +40,27 @@ function ServiceTemplate({ serviceName, dummyData }: { serviceName: string; dumm
     navigate("/book", { state: { service: serviceName.toLowerCase(), price: worker.charges } });
   };
 
-  return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Available {serviceName} Professionals</h1>
+  const handleAISuggestions = () => {
+    // Implement AI suggestion logic here
+    alert(`Fetching AI suggestions for ${serviceName} providers...`);
+  };
 
+  return (
+    <div className="container mt-10 mx-auto p-4">
+      {/* AI Suggestion Section */}
+      <div className="bg-gray-100 p-4 rounded-lg text-center mb-6 shadow-sm">
+        <p className="text-gray-700 mb-2">
+          Don’t know who to contact? Use our Smart AI Suggestion to get the best provider in your locality.
+        </p>
+        <button
+          className="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded"
+          onClick={()=>navigate('/recommendation')}
+        >
+          AI Suggestion
+        </button>
+      </div>
+
+      <h1 className="text-2xl font-bold mb-4">Available {serviceName} Professionals</h1>
       {/* Display current location */}
       {currentLocation ? (
         <div className="mb-4 text-gray-700">
@@ -90,6 +107,7 @@ function ServiceTemplate({ serviceName, dummyData }: { serviceName: string; dumm
 
 export default ServiceTemplate;
 
+// Example services are unchanged, and they remain as they are in the original code.
 // Example usage for all services
 export const Painting = () => (
   <ServiceTemplate
@@ -191,5 +209,3 @@ export const Salon = () => (
     ]}
   />
 );
-
-

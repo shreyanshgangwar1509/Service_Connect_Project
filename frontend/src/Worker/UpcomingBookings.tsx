@@ -1,5 +1,5 @@
 import { BookingCard } from './BookingCard';
-import { Booking } from '../types/booking';
+import {Booking }  from './Booking';
 
 const todayBookings: Booking[] = [
   {

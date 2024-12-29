@@ -1,4 +1,4 @@
-import { BookingCard } from './BookingCard';
+import {BookingCard}   from './BookingCard';
 import { Booking } from './Booking';
 
 const pastBookings: Booking[] = [
