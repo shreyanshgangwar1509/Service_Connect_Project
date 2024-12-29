@@ -23,7 +23,7 @@ function ServiceTemplate({ serviceName, dummyData }: { serviceName: string; dumm
       (position) => {
         setCurrentLocation(position);
       },
-      (err) => {
+      () => {
         setError("Failed to get location");
       }
     );

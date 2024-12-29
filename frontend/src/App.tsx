@@ -42,6 +42,7 @@ import {
 } from "./Pages/Services/ServiceTemplate"; // Updated import path
 import VoiceCommandScreen from "./Pages/VoiceCommandScreen";
 import WorkerRoutes from "./Worker/WorkerRoutes";
+// import Chat from "./Pages/ChatBot/Chat";
 
 const TitleUpdater = () => {
   const location = useLocation();
@@ -137,10 +138,15 @@ function App() {
           {/* <Route element={<WorkerRoutes />}> */}
           <Route path="/HomeWorker" element={<HomeWorker/> } />
             <Route path="/mybooking" element={<MyBookings/> } />
+            <Route path="/portfolio" element={<></>}/>
+            <Route path="/community" />
+            <Route path="/pastbookings" />
+            <Route path="/review" />
+
             <Route path="/portfolio"element={<><Portfolio/><Analytics/></> }  />
             <Route path="/community"  element={<Community/> } />
             <Route path="/allbookings"  element={<Bookings/>} />
-            <Route path="/review"  element={<Review/>}/>
+
             <Route path="/complain" />
             {/* <Route path="/analytics" /> */}
             <Route path="/order-confirmation"  element={<OrderConfirmationPage/>} />
