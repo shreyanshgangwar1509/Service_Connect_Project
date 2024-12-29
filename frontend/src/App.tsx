@@ -35,7 +35,7 @@ import {
 } from "./Pages/Services/ServiceTemplate"; // Updated import path
 import VoiceCommandScreen from "./Pages/VoiceCommandScreen";
 import WorkerRoutes from "./Worker/WorkerRoutes";
-import Chat from "./Pages/ChatBot/Chat";
+// import Chat from "./Pages/ChatBot/Chat";
 
 const TitleUpdater = () => {
   const location = useLocation();
@@ -130,7 +130,7 @@ function App() {
           </Route>
           <Route element={<WorkerRoutes />}>
             <Route path="/mybooking" element={<MyBookings/> } />
-            <Route path="/portfolio" />
+            <Route path="/portfolio" element={<></>}/>
             <Route path="/community" />
             <Route path="/pastbookings" />
             <Route path="/review" />
