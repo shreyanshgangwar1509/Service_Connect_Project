@@ -42,7 +42,6 @@ import {
 } from "./Pages/Services/ServiceTemplate"; // Updated import path
 import VoiceCommandScreen from "./Pages/VoiceCommandScreen";
 import WorkerRoutes from "./Worker/WorkerRoutes";
-import Chat from "./Pages/ChatBot/Chat";
 
 const TitleUpdater = () => {
   const location = useLocation();
