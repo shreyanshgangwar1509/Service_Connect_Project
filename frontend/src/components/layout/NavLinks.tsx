@@ -27,13 +27,11 @@ export function NavLinks({ className = '' }: NavLinksProps) {
   }
   return (
     <div className={`items-center space-x-6 ${className}`}>
-      <Button variant='ghost' onClick={()=>navigate('/voicebook')}>Voice</Button>
       <Button variant="ghost" onClick={()=>navigate('/services')}>Services</Button>
       <Button variant="ghost" onClick={()=>navigate('/bookings')}>Bookings</Button>
       <Button variant="ghost" onClick={()=>navigate('/become-provider')}>Become a Provider</Button>
       <Button variant="ghost" onClick={() => navigate('/inventory')}>Inventory</Button>
-      <Button variant='ghost' onClick={()=>navigate('/recommendation')}>Recommendation</Button>
-      <Button variant='ghost' onClick={()=>navigate('/HomeWorker')}>Worker</Button>
+      {/* <Button variant='ghost' onClick={()=>navigate('/HomeWorker')}>Worker</Button> */}
       {logged ? (
         <>
           <Button variant="ghost" onClick={()=>navigate('/profile')}>
