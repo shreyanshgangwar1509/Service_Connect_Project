@@ -1,3 +1,4 @@
+import useAuth from "@/hooks/useAuth";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
@@ -23,6 +24,11 @@ const MyBookings: React.FC = () => {
     fetchBookings();
   }, []);
 
+  const { isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) {
+    return <p>Please login to access this page.</p>;
+  }
   if (error) {
     return <div>{error}</div>;
   }

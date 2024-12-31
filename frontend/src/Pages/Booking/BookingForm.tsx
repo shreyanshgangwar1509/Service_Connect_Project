@@ -1,3 +1,4 @@
+import useAuth from '@/hooks/useAuth';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -36,6 +37,8 @@ interface GeolocationCoordinates {
 }
 
 const BookingForm: React.FC<BookingFormProps> = ({ service, charges }) => {
+  
+
   const [currentService, setCurrentService] = useState(service || '');
   const [address, setAddress] = useState('');
   const [currentAddress, setCurrentAddress] = useState('');
@@ -122,6 +125,11 @@ const BookingForm: React.FC<BookingFormProps> = ({ service, charges }) => {
     await displayRazorpay(options);
   };
 
+  const { isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) {
+    return <p>Please login to access this page.</p>;
+  }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <form

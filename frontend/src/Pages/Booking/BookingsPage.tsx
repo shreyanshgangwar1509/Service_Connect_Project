@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import useAuth from "@/hooks/useAuth";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface Booking {
@@ -18,6 +19,9 @@ const BookingsPage = () => {
 
   // Simulate fetching bookings data
   useEffect(() => {
+    // const reponse = await axios.get("http://localhost:3000/api/worker/bookings")
+    // setBookings(reponse);
+    
     setTimeout(() => {
       setBookings([
         {
@@ -52,6 +56,12 @@ const BookingsPage = () => {
   const handleViewDetails = (booking: Booking) => {
     navigate(`/bookings/${booking.id}`, { state: booking });
   };
+  const { isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) {
+    return <p>Please login to access this page.</p>;
+  }
+
 
   return (
     <div className="container mx-auto mt-20 p-4">
