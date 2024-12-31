@@ -136,7 +136,7 @@ const SignUp = async (req, res) => {
   }
 };
 const Login = async (req, res) => {
-  const { email, password,role } = req.body; // Added role
+  const { email, password ,role } = req.body; // Added role
   // const role = req.role;
   console.log("Login attempt for email:", email);
   
