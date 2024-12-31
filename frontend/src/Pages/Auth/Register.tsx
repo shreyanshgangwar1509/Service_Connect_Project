@@ -274,6 +274,10 @@ export default function Register() {
     }
 
     try {
+      const identity = {
+        identityNumber,
+        identityType,
+      }
       const payload =
         role === "worker"
           ? {
@@ -285,9 +289,9 @@ export default function Register() {
               service,
               phone,
               location,
-              avatar,
-              identityType,
-              identityNumber,
+            avatar,
+              identity
+              
             }
           : { role, email, password, name };
 
@@ -448,14 +452,18 @@ export default function Register() {
                       className="bg-white border p-2 w-full"
                     />
                   </div>
-                  <div>
-                    <label className="block mb-2">Identity Type</label>
-                    <input
-                      type="text"
-                      value={identityType}
-                      onChange={(e) => setIdentityType(e.target.value)}
-                      className="bg-white border p-2 w-full"
-                    />
+                    <div>
+                      <label className="block mb-2">Role</label>
+                <select
+                  value={identityType}
+                  onChange={(e) => setRole(e.target.value)}
+                  className="border p-2 w-full bg-white"
+                >
+                  <option value="user">Adhar</option>
+                  <option value="worker">Bina Adhar</option>
+                  <option value="admin">Other</option>
+                </select>
+                    
                   </div>
                   <div>
                     <label className="block mb-2">Identity Number</label>

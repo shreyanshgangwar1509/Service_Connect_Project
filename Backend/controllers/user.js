@@ -82,10 +82,12 @@ const SignUp = async (req, res) => {
 
     let user;
     if (role == 'user' || role == 'admin') {
-      user = new Model({ name, email, password, isVerified: false,avatar:  {
-                public_id: publicId,
-                url: imageUrl,
-            }, });
+      user = new Model({
+        name, email, password, isVerified: false
+        // , avatar: {
+        //         public_id: publicId,
+        //         url: imageUrl,
+            , });
       
     }
     else if (role == 'worker') {
