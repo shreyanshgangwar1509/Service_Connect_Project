@@ -2,7 +2,7 @@ import L from "leaflet";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import "leaflet/dist/leaflet.css";
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 const Map = () => {
   const mapRef = useRef(null);
@@ -19,11 +19,11 @@ const Map = () => {
     if (!mapRef.current) {
       mapRef.current = L.map(mapContainerRef.current).setView(
         [25.492757, 81.866856],
-        17
+        100
       );
 
       L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 19,
+        maxZoom: 100,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       }).addTo(mapRef.current);
     }
@@ -64,7 +64,7 @@ const Map = () => {
       if ("geolocation" in navigator) {
         const watchId = navigator.geolocation.watchPosition(success, error, {
           enableHighAccuracy: true,
-          timeout: 20000,
+          timeout: 2000,
           maximumAge: 0,
         });
 
