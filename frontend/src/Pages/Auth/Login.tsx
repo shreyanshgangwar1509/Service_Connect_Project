@@ -12,14 +12,31 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [role, setRole] = useState("user");
   // const [isLogged ,setIslogged] = useState(false)
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post("/api/auth/login", { email, password });
-      localStorage.setItem('token',response.data.accesstoken)
-      // Assuming the backend sends a JWT token on successful login
-      navigate('/profile');
+      const response = await fetch("http://localhost:3000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password, role }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Invalid email or password. Please try again.");
+      }
+
+      const data = await response.json();
+      console.log(data.accesstoken);
+
+      // Save token in local storage
+      localStorage.setItem("token", data.accesstoken);
+
+      // Navigate to profile
+      navigate("/profile");
     } catch (error) {
       console.log(error);
       setErrorMessage("Invalid email or password. Please try again.");
@@ -38,6 +55,18 @@ export default function LoginPage() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+                <label className="block mb-2">Role</label>
+                <select
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                  className="border p-2 w-full bg-white"
+                >
+                  <option value="user">User</option>
+                  <option value="worker">Worker</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
           <div>
             <label className="block text-gray-700 font-semibold">Email</label>
             <input

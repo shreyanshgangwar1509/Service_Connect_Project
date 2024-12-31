@@ -7,6 +7,9 @@ interface ProfileData {
   email: string;
 }
 
+const api = axios.create({
+  baseURL: "http://localhost:3000", // Set the base URL here
+});
 const Profile: React.FC = () => {
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -14,12 +17,11 @@ const Profile: React.FC = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const adminData = JSON.parse(localStorage.getItem('user-info') || '{}');
-        const token = adminData.token || null;
-
-        const response = await axios.get(`${process.env.BACKEND_URL}/api/auth/me`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const adminData = JSON.parse(localStorage.getItem('token') || '{}');
+        const token = adminData || null;
+        console.log(token);
+        
+        const response = await api.get(`/api/auth/me`,{token});
 
         setProfile(response.data);
       } catch (err) {

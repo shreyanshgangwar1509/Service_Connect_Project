@@ -10,7 +10,7 @@
 
 // export default function Register() {
 //   const [email, setEmail] = useState("");
-//   const [username, setUsername] = useState("");
+//   const [name, setname] = useState("");
 //   const [password, setPassword] = useState("");
 //   const [confirmPassword, setConfirmPassword] = useState("");
 //   const [error, setError] = useState("");
@@ -27,7 +27,7 @@
 //       return;
 //     }
 //     try {
-//       const response = await api.post("/api/auth/register", { email, password, username });
+//       const response = await api.post("/api/auth/register", { email, password, name });
 //       if (response.status === 200) {
 //         setIsOtpScreen(true); // Show OTP screen on successful registration
 //       }
@@ -80,11 +80,11 @@
 //             {error && <p className="text-red-500">{error}</p>}
 //             <form onSubmit={handleRegisterSubmit} className="space-y-4">
 //               <div>
-//                 <label className="block mb-2">Username</label>
+//                 <label className="block mb-2">name</label>
 //                 <input
 //                   type="text"
-//                   value={username}
-//                   onChange={(e) => setUsername(e.target.value)}
+//                   value={name}
+//                   onChange={(e) => setname(e.target.value)}
 //                   className="border p-2 w-full bg-white"
 //                   required
 //                 />
@@ -147,7 +147,7 @@ const api = axios.create({
 export default function Register() {
   const [role, setRole] = useState("user"); // 'user', 'worker', 'admin'
   const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
+  const [name, setname] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
@@ -181,7 +181,7 @@ export default function Register() {
               role,
               email,
               password,
-              username,
+              name,
               workerName,
               service,
               phone,
@@ -190,13 +190,14 @@ export default function Register() {
               identityType,
               identityNumber,
             }
-          : { role, email, password, username };
+          : { role, email, password, name };
 
       const response = await api.post("/api/auth/register", payload);
 
       if (response.status === 200) {
         setIsOtpScreen(true); // Show OTP screen on successful registration
       }
+      if (response.status === 403) setError("account already exist");
     } catch (err) {
       setError("Registration failed");
     }
@@ -260,11 +261,11 @@ export default function Register() {
 
               {/* Common Fields for All Roles */}
               <div>
-                <label className="block mb-2">Username</label>
+                <label className="block mb-2">name</label>
                 <input
                   type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  value={name}
+                  onChange={(e) => setname(e.target.value)}
                   className=" bg-white border p-2 w-full"
                   required
                 />
