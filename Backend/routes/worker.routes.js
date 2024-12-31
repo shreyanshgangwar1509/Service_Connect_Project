@@ -14,7 +14,8 @@ router.use(isAuthenticated);
 router.get('/profile', getProfile);
 router.get('/portfolio', worker.WorkerPortfolio);
 router.delete('/delete-account', worker.DeleteMyAccount);
-
+router.get('/ratingdetails', worker.getallRatings);
+router.get('/bookingdetails', worker.getBookingDetailsBout);
 /**
  * Booking Routes
  */

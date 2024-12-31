@@ -22,26 +22,15 @@ import Inventory from "./Pages/Inventory";
 import Profile from "./Pages/Profile";
 import RecommendationPage from "./Pages/Recommendation";
 import AllService from "./Pages/Services/AllService";
-import Portfolio from "./Worker/Portfolio";
+import ServiceTemplate from "./Pages/Services/ServiceTemplate";
+import VoiceCommandScreen from "./Pages/VoiceCommandScreen";
+
 import Analytics from "./Worker/Analytics";
 import Community from "./Worker/Community";
-import { OrderConfirmationPage } from "./Worker/OrderConfirmation";
 import { Bookings } from "./Worker/MyBooking";
-import Review from "./Worker/Review";
-import {
-  CarRepair,
-  Electronics,
-  EventManagement,
-  HomeCleaning,
-  Laundry,
-  Maids,
-  // AllService,
-  Painting,
-  Plumbing,
-  Salon,
-} from "./Pages/Services/ServiceTemplate"; // Updated import path
-import VoiceCommandScreen from "./Pages/VoiceCommandScreen";
-import WorkerRoutes from "./Worker/WorkerRoutes";
+import { OrderConfirmationPage } from "./Worker/OrderConfirmation";
+import Portfolio from "./Worker/Portfolio";
+
 // import Chat from "./Pages/ChatBot/Chat";
 
 const TitleUpdater = () => {
@@ -116,15 +105,15 @@ function App() {
           <Route path='/chat' element={<Chat/>}/>
           {/* Service Routes */}
           <Route path="/chat" element={<Chat />} />
-          <Route path="/plumbing" element={<Plumbing />} />
-          <Route path="/painting" element={<Painting />} />
-          <Route path="/cleaning" element={<HomeCleaning />} />
-          <Route path="/maids" element={<Maids />} />
-          <Route path="/laundry" element={<Laundry />} />
-          <Route path="/car" element={<CarRepair />} />
-          <Route path="/salon" element={<Salon />} />
-          <Route path="/electronics" element={<Electronics />} />
-          <Route path="/events" element={<EventManagement />} />
+          <Route path="/plumbing" element={<ServiceTemplate serviceName="Plumbing"  />} />
+          <Route path="/painting" element={<ServiceTemplate serviceName="Painting" />} />
+          <Route path="/cleaning" element={<ServiceTemplate serviceName="HomeCleaning"/>} />
+          <Route path="/maids" element={<ServiceTemplate serviceName="Maids" />} />
+          <Route path="/laundry" element={<ServiceTemplate serviceName="Laundry" />} />
+          <Route path="/car" element={<ServiceTemplate serviceName="CarRepair" />} />
+          <Route path="/salon" element={<ServiceTemplate serviceName="Salon" />} />
+          <Route path="/electronics" element={<ServiceTemplate serviceName="Electronics" />} />
+          <Route path="/events" element={<ServiceTemplate serviceName="EventManagement" />} />
           <Route path="/become-provider" element={<GetHiredPage/>} />
           <Route path="/bookings" element={<BookingsPage/>}/>
           <Route path="/inventory" element={<Inventory />} />
@@ -138,8 +127,6 @@ function App() {
           {/* <Route element={<WorkerRoutes />}> */}
           <Route path="/HomeWorker" element={<HomeWorker/> } />
             <Route path="/mybooking" element={<MyBookings/> } />
-            <Route path="/portfolio" element={<></>}/>
-            <Route path="/community" />
             <Route path="/pastbookings" />
             <Route path="/review" />
 

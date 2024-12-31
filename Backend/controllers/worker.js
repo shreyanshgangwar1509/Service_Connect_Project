@@ -172,7 +172,9 @@ export const getWorkerBookings = async (req, res) => {
   }
 };
 const getAllProviders = async (req, res) => {
-    try {
+  try {
+      console.log('getting all providers');
+      
         const { service } = req.params; // Service from URL params
         const { longitude, latitude } = req.query; // Coordinates from query params
 
@@ -195,7 +197,10 @@ const getAllProviders = async (req, res) => {
         // Check if workers found
         if (!workers.length) {
             return res.status(404).json({ message: "No providers found for the given service and location." });
-        }
+    }
+    if (!Array.isArray(workers)) {
+      return res.status(500).json({ error: "Invalid data format. Expected an array." });
+    }
 
         // Send response
         res.status(200).json({
@@ -207,4 +212,57 @@ const getAllProviders = async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 };
-export default { getAllProviders,getWorkerBookings,workerProfile,CurrentBooking,PastBookings,WorkerPortfolio,AddOnCostOfMaterial,ChatWithUser, DeleteMyAccount,updateWorkerLocation,getWorkerBookings,getWorkerLocation };
+const getallRatings = async (req, res) => {
+  try {
+    const workerid = req.user; 
+    const worker = await Worker.findById(workerid, "review"); 
+
+    const ratingarray = Array(5).fill(0); 
+
+    worker.review.forEach((review) => {
+      const star = review.star;  
+      
+      if (star >= 0 && star < 5) {
+        ratingarray[star]++;  
+      }
+    });
+
+    res.status(200).json({ message: "Successfully fetched ratings", ratingarray });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error fetching ratings", error: error.message });
+  }
+};
+
+const getBookingDetailsBout = async (req, res) => {
+  try {
+    const workerId = req.user; // Assuming workerId is stored in req.user
+
+    const allbooking = await Booking.find({ workerId }, "status");
+
+    const bookingdetails = Array(3).fill(0);
+
+    allbooking.forEach((booking) => {
+      if (booking.status === 'ongoing') {
+        bookingdetails[0]++;
+      } else if (booking.status === 'completed') {
+        bookingdetails[1]++;
+      } else if (booking.status === 'cancelled') {
+        bookingdetails[2]++;
+      }
+    });
+
+    res.status(200).json({
+      message: "Successfully fetched booking details",
+      bookingdetails,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Failed to fetch booking details",
+      error: error.message,
+    });
+  }
+};
+
+export default {getBookingDetailsBout, getallRatings,getAllProviders,getWorkerBookings,workerProfile,CurrentBooking,PastBookings,WorkerPortfolio,AddOnCostOfMaterial,ChatWithUser, DeleteMyAccount,updateWorkerLocation,getWorkerBookings,getWorkerLocation };

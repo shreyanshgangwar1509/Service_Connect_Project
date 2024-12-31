@@ -42,7 +42,6 @@ const workerSchema = new Schema({
             default: [0, 0],
         },
     },
-    
     available: {
         type: Boolean,
         default: true, // Default value added
@@ -76,8 +75,11 @@ const workerSchema = new Schema({
         default:0,
     },
     review: [{
-        type:String,
-    }],
+        star:{
+        type:Number,
+        },
+        content: {
+        type:String,}}],
     portfolio: {
         projects: [
             {
