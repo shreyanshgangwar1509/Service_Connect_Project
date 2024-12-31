@@ -7,9 +7,12 @@ interface ProfileData {
   email: string;
 }
 
+// Create Axios instance with default settings
 const api = axios.create({
-  baseURL: "http://localhost:3000", // Set the base URL here
+  baseURL: 'http://localhost:3000', // Backend API base URL
+  withCredentials: true, // Ensures cookies are included
 });
+
 const Profile: React.FC = () => {
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -17,15 +20,23 @@ const Profile: React.FC = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const adminData = JSON.parse(localStorage.getItem('token') || '{}');
+        // Retrieve token from localStorage
+        const adminData = localStorage.getItem('token') || '{}';
         const token = adminData || null;
-        console.log(token);
-        
-        const response = await api.get(`/api/auth/me`,{token});
+
+        console.log('Token:', token);
+
+        // Make API request with Authorization header
+        const response = await api.get('/api/auth/me', {
+          headers: {
+            Authorization: `Bearer ${token}`, // Add Bearer token to headers
+          },
+        });
 
         setProfile(response.data);
       } catch (err) {
         setError('Error in fetching profile: Server Error');
+        console.error(err);
       }
     };
 

@@ -13,7 +13,7 @@ import adminroutes from './routes/admin.routes.js';
 import authroutes from './routes/auth.routes.js';
 import chatroutes from './routes/chat.routes.js';
 import userroutes from './routes/user.routes.js';
-import workerroutes from './routes/worker.routes.js'
+import workerroutes from './routes/worker.routes.js';
 import { connectdb } from './utills/connectdb.js';
 
 // Initialize Express App
@@ -32,7 +32,10 @@ const io = new Server(server, {
 export const userSocketIds = new Map();
 
 // Middlewares
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5174', // Explicit frontend origin
+  credentials: true, // Allow cookies and credentials
+}));
 app.use(express.json());
 app.use(cookieParser());
 app.use(errorMiddleware);

@@ -1,11 +1,12 @@
 import express from 'express';
 import { getProfile, Login, logoutUser, SignUp, verifyemail } from '../controllers/user.js';
 import { isAuthenticated } from '../middlewares/auth.js';
+import { singleAvatar } from '../middlewares/multer.js';
 
 const  router = express.Router();
 
 
-router.post('/signup', SignUp);
+router.post('/signup',singleAvatar, SignUp);
 
 router.post('/login', Login);
 router.post('/verifyemail', verifyemail);
@@ -14,4 +15,4 @@ router.post('/verifyemail', verifyemail);
 router.get('/me', isAuthenticated, getProfile);
 router.get('/logout', isAuthenticated, logoutUser);
 
-export default router
+export default router;

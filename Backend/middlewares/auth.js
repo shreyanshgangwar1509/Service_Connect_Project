@@ -24,12 +24,21 @@ export const IsBooked = async (req, res, next) => {
 export const isAuthenticated = async (req, res, next) => {
     try {
         // Access the token from cookies
-        const token = req.cookies['access-token']; // Accessing token from request cookies
-
-        // console.log('cookie ', req.cookies)
-        if (!token) {
-            return res.status(401).json({ message: "You are not logged in." });
-        }
+        // const token = req.cookies['access-token']; // Accessing token from request cookies
+      // const {token} = req.body;
+      // console.log(req.body);
+      
+      //   console.log('cookie 1 ', token)
+      //   if (!token) {
+      //       return res.status(401).json({ message: "You are not logged in." });
+      //   }
+      const authHeader = req.header('Authorization');
+    const token = authHeader && authHeader.split(' ')[1]; // Extract the token after "Bearer"
+    console.log('auth  ',token);
+    
+    if (!token) {
+        return res.status(401).json({ message: 'Access denied. No token provided.' });
+    }
       const decodedData = jwt.verify(token, process.env.JWT_SECERET);
       console.log(decodedData);
       

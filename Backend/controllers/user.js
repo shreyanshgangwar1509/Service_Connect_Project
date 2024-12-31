@@ -64,11 +64,13 @@ const googleSignIn = async (req, res) => {
 const SignUp = async (req, res) => {
   console.log('Auth routes called register');
 
-  const { username, email, password, role } = req.body; // Added role
-  // const avatar = req.files[0];
+  const { name, email, password, role } = req.body; // Added role
+  
   console.log("Received email:", email);
 
   try {
+    const publicId = req.file.filename || req.file.public_id; 
+  const imageUrl = req.file.path;
     const Model = role === 'worker' ? Worker : User;
 
     const existingUser = await Model.findOne({ email });
@@ -80,20 +82,24 @@ const SignUp = async (req, res) => {
 
     let user;
     if (role == 'user' || role == 'admin') {
-      user = new Model({ username, email, password, isVerified: false });
+      user = new Model({ name, email, password, isVerified: false,avatar:  {
+                public_id: publicId,
+                url: imageUrl,
+            }, });
       
     }
     else if (role == 'worker') {
       let {
             name,
             password,
-            isVerified,
+            
             services,
         phone,
             email,
-            location,
-            avatar,
-            identity
+        location,
+            identityType,
+            identityNumber,
+            
         } = req.body;
 
         // Check if the worker already exists
@@ -105,18 +111,21 @@ const SignUp = async (req, res) => {
             name,
         password,
             email,
-            isVerified: isVerified || false,
+            isVerified: false,
             services,
             phone,
             location: location || {
                 type: 'Point',
                 coordinates: [0, 0]
             },
-            avatar: avatar || {
-                public_id: '',
-                url: ''
+            avatar:  {
+                public_id: publicId,
+                url: imageUrl,
             },
-            identity
+        identity: {
+          identityType,
+          identityNumber
+            }
         });
 
     }
@@ -140,7 +149,8 @@ const Login = async (req, res) => {
     const user = await Model.findOne(
         { email },
         "password isVerified role"
-      ).select("password isVerified role");    if (!user) {
+    ).select("password isVerified role");
+    if (!user) {
           return res.status(400).json({ message: 'Invalid credentials: user/worker not found' });
         }
     
@@ -162,7 +172,7 @@ const Login = async (req, res) => {
     res.cookie(process.env.ACCESS_TOKEN, accessToken, { httpOnly: true, secure: true });
     res.cookie(process.env.REFERESH_TOKEN, refreshToken, { httpOnly: true, secure: true });
 
-    return res.status(200).json({ message: "User/Worker logged in successfully", accessToken });
+    return res.status(200).json({ message: "User/Worker logged in successfully", accesstoken:accessToken });
   } catch (error) {
     console.error("Error in Login function:", error);
     return res.status(500).json({ message: 'Server error', error });
@@ -250,9 +260,9 @@ const getProfile = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-console.log('User profile has been send successfully');
+    console.log('User profile has been send successfully');
 
-    res.json({ user });
+    res.status(200).json({ user });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error });
   }
