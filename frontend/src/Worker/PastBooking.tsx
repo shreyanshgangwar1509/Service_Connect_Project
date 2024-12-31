@@ -1,5 +1,7 @@
-import {BookingCard}   from './BookingCard';
+import axios from 'axios';
+import { useEffect } from 'react';
 import { Booking } from './Booking';
+import { BookingCard } from './BookingCard';
 
 const pastBookings: Booking[] = [
   {
@@ -23,6 +25,25 @@ const pastBookings: Booking[] = [
 ];
 
 export function PastBookings() {
+  useEffect( () => {
+    const fetch = async () => {
+      try {
+        const token = localStorage.getItem('token');
+      const response = await axios.get('http://localhost:3000/api/worker/bookings/past',{
+          headers: {
+            Authorization: `Bearer ${token}`, // Add Bearer token to headers
+          },
+      });
+        console.log("response ", response.data);
+          pastBookings.push(response.data);
+          
+          
+    } catch (error) {
+      console.log(error);
+    }
+      }
+    fetch();
+  },[])
   const handleReview = (id: string) => {
     console.log('Adding review for booking:', id);
   };

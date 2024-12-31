@@ -69,8 +69,8 @@ const SignUp = async (req, res) => {
   console.log("Received email:", email);
 
   try {
-    const publicId = req.file.filename || req.file.public_id; 
-  const imageUrl = req.file.path;
+  //   const publicId = req.file.filename || req.file.public_id; 
+  // const imageUrl = req.file.path;
     const Model = role === 'worker' ? Worker : User;
 
     const existingUser = await Model.findOne({ email });
@@ -92,13 +92,14 @@ const SignUp = async (req, res) => {
       let {
             name,
             password,
-            
+            isVerified,
             services,
         phone,
+        avatar,
+        identity,
             email,
         location,
-            identityType,
-            identityNumber,
+            
             
         } = req.body;
 
@@ -118,14 +119,8 @@ const SignUp = async (req, res) => {
                 type: 'Point',
                 coordinates: [0, 0]
             },
-            avatar:  {
-                public_id: publicId,
-                url: imageUrl,
-            },
-        identity: {
-          identityType,
-          identityNumber
-            }
+            avatar,
+        identity,
         });
 
     }

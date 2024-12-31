@@ -29,7 +29,7 @@ const workerSchema = new Schema({
     ],
     phone: {
         type: String,
-        required: true,
+        // required: true,
     },
     location: {
         type: {
@@ -60,11 +60,11 @@ const workerSchema = new Schema({
     identity: {
         identityType: { // Corrected 'IdentityType' to 'identityType'
             type: String,
-            required: true,
+            // required: true,
         },
         identityNumber: { // Corrected 'IdentityNumber' to 'identityNumber'
             type: String,
-            required: true,
+            // required: true,
         }
     },
     ratingcnt: {

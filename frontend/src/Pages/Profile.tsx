@@ -1,11 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
-interface ProfileData {
-  avatar: { url: string };
-  name: string;
-  email: string;
-}
 
 // Create Axios instance with default settings
 const api = axios.create({
@@ -14,9 +9,9 @@ const api = axios.create({
 });
 
 const Profile: React.FC = () => {
-  const [profile, setProfile] = useState<ProfileData | null>(null);
+  const [profile, setProfile] = useState(null);
   const [error, setError] = useState<string | null>(null);
-
+  
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -34,6 +29,8 @@ const Profile: React.FC = () => {
         });
 
         setProfile(response.data);
+        console.log(profile);
+        
       } catch (err) {
         setError('Error in fetching profile: Server Error');
         console.error(err);
@@ -53,7 +50,7 @@ const Profile: React.FC = () => {
 
   return (
     <div>
-      <img src={profile.avatar.url} alt="Profile Avatar" />
+      {/* <img src={profile.avatar.url} alt="Profile Avatar" /> */}
       <h1>{profile.name}</h1>
       <h2>{profile.email}</h2>
     </div>

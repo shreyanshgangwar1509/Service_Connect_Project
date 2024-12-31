@@ -42,7 +42,7 @@ export const isAuthenticated = async (req, res, next) => {
       const decodedData = jwt.verify(token, process.env.JWT_SECERET);
       console.log(decodedData);
       
-        req.user = decodedData.userId;
+        req.userId = decodedData.userId;
         req.role = decodedData.role;
         console.log(req.role);
         

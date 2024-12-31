@@ -26,7 +26,11 @@ const CurrentBooking = async (req, res) => {
 
 const PastBookings = async (req, res) => {
   try {
-    const bookings = await Booking.find({ workerId: req.user.id, status: 'completed' });
+    console.log(req.userId);
+    
+    const bookings = await Booking.find({ workerId: req.userId, status: 'completed' });
+    console.log('past booking ',bookings);
+    
     res.status(200).json(bookings);
   } catch (error) {
     res.status(500).json({ message: 'Server error', error });
