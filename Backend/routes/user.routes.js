@@ -24,8 +24,8 @@ router.post('/book', handleVoiceBooking);
 router.post('/book/:service/:workerid', createBooking);             // Create a new booking
 router.get('/myBookings', getUserBookings);      // Get user's current bookings
  // Get worker's current bookings
-router.post('/cancelBooking/:bookingid', cancelBooking);    // Cancel a booking
-router.post('/completeBooking/:bookingid', completeBooking);// Mark a booking as completed
+router.post('/cancelBooking/:bookingid', cancelBooking);   
+router.post('/completeBooking/:bookingid', completeBooking);
 router.post('/markAsPaid/:bookingid', markBookingAsPaid); 
 router.get('/pastBookings', getPastBookings);
 router.post('/reviewToWorker/:bookingid', submitReviewToWorker);
