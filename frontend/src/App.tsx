@@ -11,6 +11,7 @@ import Register from "./Pages/Auth/Register";
 import BookPage from "./Pages/Booking/Booking";
 import ChatBot from "./Pages/ChatBot/ChatBot";
 import Home from "./Pages/Home/Home";
+import HomeWorker from "./Worker/HomeWorker";
 // import Provider from "./Pages/Provider";
 import ARScanner from "./components/ARScanner";
 import GetHiredPage from "./components/GetHired/page";
@@ -21,6 +22,12 @@ import Inventory from "./Pages/Inventory";
 import Profile from "./Pages/Profile";
 import RecommendationPage from "./Pages/Recommendation";
 import AllService from "./Pages/Services/AllService";
+import Portfolio from "./Worker/Portfolio";
+import Analytics from "./Worker/Analytics";
+import Community from "./Worker/Community";
+import { OrderConfirmationPage } from "./Worker/OrderConfirmation";
+import { Bookings } from "./Worker/MyBooking";
+import Review from "./Worker/Review";
 import {
   CarRepair,
   Electronics,
@@ -35,6 +42,7 @@ import {
 } from "./Pages/Services/ServiceTemplate"; // Updated import path
 import VoiceCommandScreen from "./Pages/VoiceCommandScreen";
 import WorkerRoutes from "./Worker/WorkerRoutes";
+// import Chat from "./Pages/ChatBot/Chat";
 
 const TitleUpdater = () => {
   const location = useLocation();
@@ -107,6 +115,7 @@ function App() {
           <Route path="/location-tracking" element={<Map />} />
           <Route path='/chat' element={<Chat/>}/>
           {/* Service Routes */}
+          <Route path="/chat" element={<Chat />} />
           <Route path="/plumbing" element={<Plumbing />} />
           <Route path="/painting" element={<Painting />} />
           <Route path="/cleaning" element={<HomeCleaning />} />
@@ -126,15 +135,23 @@ function App() {
           <Route element={<AdminRoute />}>
             <Route path="/admin-panel" element={<Admin />} />
           </Route>
-          <Route element={<WorkerRoutes />}>
+          {/* <Route element={<WorkerRoutes />}> */}
+          <Route path="/HomeWorker" element={<HomeWorker/> } />
             <Route path="/mybooking" element={<MyBookings/> } />
-            <Route path="/portfolio" />
+            <Route path="/portfolio" element={<></>}/>
             <Route path="/community" />
             <Route path="/pastbookings" />
             <Route path="/review" />
+
+            <Route path="/portfolio"element={<><Portfolio/><Analytics/></> }  />
+            <Route path="/community"  element={<Community/> } />
+            <Route path="/allbookings"  element={<Bookings/>} />
+
             <Route path="/complain" />
-            <Route path="/analytics" />
-          </Route>
+            {/* <Route path="/analytics" /> */}
+            <Route path="/order-confirmation"  element={<OrderConfirmationPage/>} />
+
+          {/* </Route> */}
         </Routes>
         <ChatBot/>
         <Footer />

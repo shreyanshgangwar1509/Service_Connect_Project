@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Search } from 'lucide-react';
+import { Search, Mic } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useNavigate } from "react-router-dom"; 
 import {
   Select,
   SelectContent,
@@ -14,6 +15,14 @@ import { SearchResults } from './SearchResults';
 
 export function SearchSection() {
   const [showResults, setShowResults] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [isAvailable, setIsAvailable] = useState(true); 
+  const navigate = useNavigate(); 
+
+  const handleMenuClick = (route) => {
+    navigate(route); 
+    setMenuOpen(false);
+  };
 
   return (
     <>
@@ -34,13 +43,22 @@ export function SearchSection() {
             ))}
           </SelectContent>
         </Select>
-        <Button 
-          className="bg-yellow-500 hover:bg-yellow-600 text-black"
-          onClick={() => setShowResults(true)}
-        >
-          <Search className="mr-2 h-4 w-4" />
-          Search
-        </Button>
+        <div className="flex gap-4">
+          <Button 
+            className="bg-yellow-500 hover:bg-yellow-600 text-black"
+            onClick={() => setShowResults(true)}
+          >
+            <Search className="mr-2 h-4 w-4" />
+            Search
+          </Button>
+          <Button 
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 flex items-center focus:ring-0 focus:outline-none"
+            onClick={() => navigate('/voicebook')}
+          >
+            <Mic className="mr-2 h-4 w-4" />
+            Voice Booking
+          </Button>
+        </div>
       </div>
 
       {showResults && (

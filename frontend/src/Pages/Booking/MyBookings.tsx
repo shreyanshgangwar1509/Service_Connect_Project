@@ -32,7 +32,7 @@ const MyBookings: React.FC = () => {
   }
 
   return (
-    <div>
+    <div className="mt-10">
       <h1>My Bookings</h1>
       <ul>
         {bookings.map((booking) => (
