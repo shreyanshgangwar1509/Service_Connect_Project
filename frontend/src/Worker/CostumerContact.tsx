@@ -1,4 +1,5 @@
 import { Phone, MessageCircle, MapPin } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface CustomerContactProps {
   phoneNumber: string;
@@ -6,13 +7,14 @@ interface CustomerContactProps {
 }
 
 export function CustomerContact({ phoneNumber, address }: CustomerContactProps) {
+  const navigate = useNavigate();
+
   const handleCall = () => {
     window.location.href = `tel:${phoneNumber}`;
   };
 
   const handleChat = () => {
-    // Implement chat functionality
-    console.log('Opening chat with customer');
+    navigate('/chat'); // Navigate to the Chat page
   };
 
   const handleLocate = () => {

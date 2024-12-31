@@ -33,7 +33,7 @@ export const userSocketIds = new Map();
 
 // Middlewares
 app.use(cors({
-  origin: 'http://localhost:5174', // Explicit frontend origin
+  origin: 'http://127.0.0.1:5173', // Explicit frontend origin
   credentials: true, // Allow cookies and credentials
 }));
 app.use(express.json());

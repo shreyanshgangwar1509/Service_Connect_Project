@@ -25,6 +25,7 @@ import AllService from "./Pages/Services/AllService";
 import Portfolio from "./Worker/Portfolio";
 import Analytics from "./Worker/Analytics";
 import Community from "./Worker/Community";
+import ChatWindow from "./Worker/ChatWindow";
 import { OrderConfirmationPage } from "./Worker/OrderConfirmation";
 import { Bookings } from "./Worker/MyBooking";
 import Review from "./Worker/Review";
@@ -138,7 +139,6 @@ function App() {
           {/* <Route element={<WorkerRoutes />}> */}
           <Route path="/HomeWorker" element={<HomeWorker/> } />
             <Route path="/mybooking" element={<MyBookings/> } />
-            <Route path="/portfolio" element={<></>}/>
             <Route path="/community" />
             <Route path="/pastbookings" />
             <Route path="/review" />
@@ -146,6 +146,7 @@ function App() {
             <Route path="/portfolio"element={<><Portfolio/><Analytics/></> }  />
             <Route path="/community"  element={<Community/> } />
             <Route path="/allbookings"  element={<Bookings/>} />
+            <Route path="/Chat"  element={<ChatWindow/>} />
 
             <Route path="/complain" />
             {/* <Route path="/analytics" /> */}
