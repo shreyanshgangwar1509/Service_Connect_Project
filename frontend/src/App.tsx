@@ -30,6 +30,7 @@ import Community from "./Worker/Community";
 import { Bookings } from "./Worker/MyBooking";
 import { OrderConfirmationPage } from "./Worker/OrderConfirmation";
 import Portfolio from "./Worker/Portfolio";
+import ChatWindow from "./Worker/ChatWindow";
 
 // import Chat from "./Pages/ChatBot/Chat";
 
@@ -133,6 +134,7 @@ function App() {
             <Route path="/portfolio"element={<><Portfolio/><Analytics/></> }  />
             <Route path="/community"  element={<Community/> } />
             <Route path="/allbookings"  element={<Bookings/>} />
+            <Route path="/Chat"  element={<ChatWindow/>} />
 
             <Route path="/complain" />
             {/* <Route path="/analytics" /> */}
