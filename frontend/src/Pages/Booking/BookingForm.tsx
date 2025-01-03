@@ -7,6 +7,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 interface BookingFormProps {
   service: string;
   charges: number;
+  workerId: string;
 }
 
 // Interface for Razorpay options
@@ -39,7 +40,7 @@ interface GeolocationCoordinates {
 const api = axios.create({
   baseURL: import.meta.env.BASE_URL ||'http://localhost:3000'
 })
-const BookingForm: React.FC<BookingFormProps> = ({ service, charges }) => {
+const BookingForm: React.FC<BookingFormProps> = ({ service, charges,workerId }) => {
   
 
   const [currentService, setCurrentService] = useState(service || '');

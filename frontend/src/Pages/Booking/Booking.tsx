@@ -14,7 +14,7 @@ function BookPage() {
   return isAuthenticated===true ?(
     <div>
       <h1>Booking for: {service}</h1>
-      <BookingForm service={service} charges={price} /> 
+      <BookingForm service={service} charges={price} workerId={userId} /> 
     </div>
   ):(<h1>Log in first...</h1>)
 }

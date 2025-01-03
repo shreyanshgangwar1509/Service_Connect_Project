@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom"; // If using react-router
 
 const api = axios.create({
-  baseURL: "http://localhost:3000", // Set the base URL here
+  baseURL: import.meta.env.BASE_URL || "http://localhost:3000", // Set the base URL here
 });
 
 export default function LoginPage() {

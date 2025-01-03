@@ -14,7 +14,7 @@ const MyBookings: React.FC = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await axios.get(`${process.env.BACKEND_URL}/api/user/mybookings`);
+        const response = await axios.get(`${process.env.BASE_URL}/api/user/mybookings`);
         setBookings(response.data);
       } catch (err) {
         setError("Error in fetching bookings: Server Error");

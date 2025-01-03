@@ -95,7 +95,7 @@ const VoiceCommand = () => {
             return;
           }
         const result = await axios.post(
-          `${import.meta.env.VITE_BACKEND_URL}/api/user/book`,
+          `${import.meta.env.BASE_URL}/api/user/book`,
           {
             service: serviceMap[matchedService],
             date: Date.now,

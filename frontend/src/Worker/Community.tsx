@@ -1,5 +1,5 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function Community() {
   return (
@@ -29,10 +29,10 @@ export default function Community() {
         </CardHeader>
         <CardContent className="overflow-hidden">
           {/* Marquee for Upcoming Events */}
-          <div className="relative">
-            <marquee behavior="scroll" direction="left" className="text-lg text-blue-600 font-medium">
+          <div className="inline-block animate-marquee">
+            <p className="text-lg font-medium text-blue-600">
               July 20: Service Provider Meetup • August 5: Customer Appreciation Day • August 15: Skills Workshop
-            </marquee>
+            </p>
           </div>
         </CardContent>
       </Card>

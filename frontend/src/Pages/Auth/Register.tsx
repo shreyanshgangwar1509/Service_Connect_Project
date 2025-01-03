@@ -240,7 +240,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const api = axios.create({
-  baseURL: "http://localhost:3000", // Set the base URL here
+  baseURL: import.meta.env.BASE_URL || "http://localhost:3000", // Set the base URL here
 });
 
 export default function Register() {
