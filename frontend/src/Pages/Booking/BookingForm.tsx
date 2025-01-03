@@ -36,6 +36,9 @@ interface GeolocationCoordinates {
   longitude: number;
 }
 
+const api = axios.create({
+  baseURL: 'http://localhost:3000'
+})
 const BookingForm: React.FC<BookingFormProps> = ({ service, charges }) => {
   
 
@@ -104,6 +107,25 @@ const BookingForm: React.FC<BookingFormProps> = ({ service, charges }) => {
     if (!currentService || !address || !date) {
       setError('Please fill out all fields before submitting.');
       return;
+    }
+    try {
+      const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
+  
+      const response = await api.post(
+        `/booking/${workerId}/${service}`, // Adjust route as per backend
+      
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+  
+      console.log('Booking Created:', response.data);
+    } catch (error) {
+      console.log("No booking ",error);
+      
     }
 
     const options: RazorpayOptions = {

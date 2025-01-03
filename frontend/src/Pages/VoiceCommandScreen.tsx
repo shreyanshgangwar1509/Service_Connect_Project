@@ -1,12 +1,34 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaMicrophone } from 'react-icons/fa'; // Voice Icon
 
 const VoiceCommand = () => {
   const [command, setCommand] = useState<string | null>(null);
   const [response, setResponse] = useState<string | null>(null);
   const [isListening, setIsListening] = useState(false);
-
+   const [address, setAddress] = useState('');
+  const [currentAddress, setCurrentAddress] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      async (position: { coords: GeolocationCoordinates }) => {
+        const { latitude, longitude } = position.coords;
+        try {
+          // const response = await axios.get(
+          //   `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+          // );
+          const response = await axios.get(`https://us1.locationiq.com/v1/reverse?key=pk.b4a303b7b66882730107e84e467e2916&lat=${latitude}&lon=${longitude}&format=json&`)
+          console.log(response);
+          
+          setCurrentAddress(response.data.city);
+          setAddress(response.data.display_name);
+        } catch (err) {
+          setError('Failed to fetch address. Please try again.');
+        }
+      },
+      () => setError('Unable to access your location.')
+    );
+  }, []);
   const startListening = () => {
     const SpeechRecognition =
       (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
@@ -67,13 +89,21 @@ const VoiceCommand = () => {
 
     if (matchedService) {
       try {
+        
+          if (!serviceMap[matchedService] || !address ) {
+            setError('Please fill out all fields before submitting.');
+            return;
+          }
         const result = await axios.post(
           `${import.meta.env.VITE_BACKEND_URL}/api/user/book`,
           {
             service: serviceMap[matchedService],
-            date: 'Tomorrow',
+            date: Date.now,
+            address,
           }
-        );
+          // console.log(result.data);
+          )
+
         setResponse(`${serviceMap[matchedService]} booked for tomorrow!`);
         speak(`${serviceMap[matchedService]} booked successfully for tomorrow!`);
       } catch (error) {

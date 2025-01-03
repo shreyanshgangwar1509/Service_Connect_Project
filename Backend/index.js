@@ -20,7 +20,6 @@ import { connectdb } from './utills/connectdb.js';
 const app = express();
 const server = createServer(app);
 
-// Socket.IO setup
 const io = new Server(server, {
   cors: {
     origin: '*', // Adjust this in production
@@ -28,13 +27,24 @@ const io = new Server(server, {
   },
 });
 
-// Global map to track connected users
 export const userSocketIds = new Map();
 
-// Middlewares
+const allowedOrigins = [
+  'http://localhost:5174',
+  'http://127.0.0.1:5173'
+];
+
 app.use(cors({
-  origin: 'http://127.0.0.1:5173', // Explicit frontend origin
-  credentials: true, // Allow cookies and credentials
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, 
 }));
 app.use(express.json());
 app.use(cookieParser());
@@ -123,6 +133,7 @@ io.on('connection', (socket) => {
 });
 
 // Start the server
-server.listen(3000, () => {
+const port = process.env.PORT || 4000;
+server.listen(4000, () => {
   console.log('Server is listening on port 3000');
 });
