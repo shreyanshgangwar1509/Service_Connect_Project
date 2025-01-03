@@ -11,7 +11,7 @@ interface Worker {
 }
 
 const api = axios.create({
-  baseURL: 'http://localhost:3000', // Backend API base URL
+  baseURL: import.meta.env.BASE_URL || 'http://localhost:3000', // Backend API base URL
   withCredentials: true, // Ensures cookies are included
 });
 

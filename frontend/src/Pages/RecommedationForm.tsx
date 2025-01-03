@@ -72,7 +72,7 @@ const RecommendationForm: React.FC = () => {
     setTimeout(async () => {
       try {
         // Fetch recommendations from your backend (replace with actual API URL)
-        const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/recommendations`, {
+        const response = await axios.post(`${process.env.BASE_URL}/api/recommendations`, {
           serviceType,
           budget: Number(budget),
           urgency,

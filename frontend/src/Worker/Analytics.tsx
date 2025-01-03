@@ -1,9 +1,9 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
-import { Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { useEffect, useState } from "react";
 import axios from "axios";
+import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
+import { useEffect, useState } from "react";
+import { Doughnut } from "react-chartjs-2";
+import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -49,7 +49,7 @@ export default function Analytics() {
     const fetchRatingData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get("http://localhost:3000/api/worker/ratingdetail", {
+        const response = await axios.get(`${import.meta.env.BASE_URL}/api/worker/ratingdetail`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
