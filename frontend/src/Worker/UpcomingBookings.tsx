@@ -36,7 +36,7 @@ export function UpcomingBookings() {
 
         const response = await axios.get('http://localhost:3000/api/worker/bookings/current', {
           headers: {
-            Authorization: `Bearer ${token}`, // Add Bearer token to headers
+            Authorization: `Bearer ${token}`, 
           },
         });
 

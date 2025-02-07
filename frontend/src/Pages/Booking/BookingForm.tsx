@@ -44,6 +44,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ service, charges,workerId }) 
   
 
   const [currentService, setCurrentService] = useState(service || '');
+  const [problem, setProblem] = useState('');
   const [address, setAddress] = useState('');
   const [currentAddress, setCurrentAddress] = useState('');
   const [isEditable, setIsEditable] = useState(false);
@@ -113,8 +114,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ service, charges,workerId }) 
       const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
   
       const response = await api.post(
-        `/booking/${workerId}/${service}`, // Adjust route as per backend
-      
+        `api/user/book/${service}/${workerId}`, {problem, address, date, time, cost:charges},
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -170,6 +170,15 @@ const BookingForm: React.FC<BookingFormProps> = ({ service, charges,workerId }) 
           value={currentService}
           onChange={(e) => setCurrentService(e.target.value)}
           placeholder="Enter your service"
+          className="w-full p-2 border rounded mb-4 bg-white"
+          required
+        />
+        <label>problem</label>
+        <input
+          type="text"
+          value={problem}
+          onChange={(e) => setProblem(e.target.value)}
+          placeholder="Enter your problem"
           className="w-full p-2 border rounded mb-4 bg-white"
           required
         />

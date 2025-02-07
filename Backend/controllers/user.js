@@ -127,7 +127,6 @@ const SignUp = async (req, res) => {
 
     }
     await user.save();
-
     await sendverificationemail(req, email);
     return res.status(200).json({ message: "User/Worker registered successfully", user });
   } catch (error) {
@@ -199,7 +198,15 @@ const verifyemail = async (req, res) => {
 
   try {
     const verificationToken = await VerificationToken.findOne({ email });
-
+    // console.log(verificationToken);
+    // console.log(verificationToken.token);
+    console.log(email);
+    console.log(otp);
+    console.log(role);
+    
+    
+    
+    
     if (!verificationToken || otp !== verificationToken.token) {
       return res.status(400).json({ message: "Invalid or expired OTP." });
     }
@@ -414,12 +421,12 @@ const getUserBookings = async (req, res) => {
   try {
     const bookings = await Booking.find({ userId: req.user, status: 'ongoing' });
     const modifiedbooking = bookings.map(({ _id, userId, workerId, problem, cost }) => ({
-      _id,
-      userId, workerId,
+      id:_id,
+      userId,
+      provider:workerId,
       problem,
-      cost,
+      price:cost,
     }))
-    
     res.status(200).json(modifiedbooking);
   } catch (error) {
     res.status(500).json({ message: 'Server error', error });

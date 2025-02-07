@@ -6,12 +6,13 @@ import { useNavigate } from "react-router-dom";
 interface Worker {
   id: string;
   name: string;
+  avatar:string,
   charges: number;
   rating: number;
 }
 
 const api = axios.create({
-  baseURL: import.meta.env.BASE_URL || 'http://localhost:3000', // Backend API base URL
+  baseURL: import.meta.env.BASE_URL || 'http://localhost:3000', 
   withCredentials: true, // Ensures cookies are included
 });
 
@@ -44,7 +45,6 @@ function ServiceTemplate({ serviceName }: { serviceName: string }) {
           );
 
           console.log(response.data);
-          // Ensure response is an array before setting
           if (Array.isArray(response.data)) {
             setWorkerData(response.data);
           } else {
@@ -64,7 +64,7 @@ function ServiceTemplate({ serviceName }: { serviceName: string }) {
   }, [currentLocation, serviceName]);
 
   const book = (worker: Worker) => {
-    navigate("/book", { state: { service: serviceName.toLowerCase(), price: worker.charges } });
+    navigate("/book", { state: { service: serviceName.toLowerCase(), price: worker.charges,id:worker.id } });
   };
 
   return (
@@ -76,7 +76,7 @@ function ServiceTemplate({ serviceName }: { serviceName: string }) {
         </p>
         <button
           className="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded"
-          onClick={() => navigate('/recommendation')}
+          onClick={() => navigate('/recommendation' )}
         >
           AI Suggestion
         </button>

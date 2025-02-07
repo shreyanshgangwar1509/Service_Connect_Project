@@ -14,7 +14,7 @@ export const setToken = (user) => {
         {
             role:user.role,
             userId: user._id,
-            
+            name:user.name,
         }, process.env.JWT_SECERET, {
         expiresIn: '1h'
     });

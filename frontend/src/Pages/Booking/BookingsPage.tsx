@@ -1,5 +1,6 @@
-import useAuth from "@/hooks/useAuth";
+import axios from "axios";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 interface Booking {
@@ -23,6 +24,7 @@ const BookingsPage = () => {
     // setBookings(reponse);
     
     setTimeout(() => {
+
       setBookings([
         {
           id: "1",
@@ -49,6 +51,21 @@ const BookingsPage = () => {
           price: "₹300",
         },
       ]);
+      
+      const fetchbookings = async () => {
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`${import.meta.env.BASE_URL}/api/user/myBookings`, 
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          });
+        console.log("user booking ",response.data);
+        
+        setBookings(response.data);
+      }
+      fetchbookings();
       setLoading(false);
     }, 1000);
   }, []);
@@ -56,9 +73,9 @@ const BookingsPage = () => {
   const handleViewDetails = (booking: Booking) => {
     navigate(`/bookings/${booking.id}`, { state: booking });
   };
-  const { isAuthenticated } = useAuth();
+  const { isVerified } = useSelector((state)=>state.auth);
 
-  if (!isAuthenticated) {
+  if (!isVerified) {
     return <p>Please login to access this page.</p>;
   }
 

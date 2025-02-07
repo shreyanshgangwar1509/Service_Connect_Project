@@ -1,18 +1,17 @@
 
+import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 
 const AdminRoute = () => {
-  const adminData = JSON.parse(localStorage.getItem('user-info') || '{}')
-  const token = adminData.token || null
-  const role = adminData.role || null
+  const { isAdmin } = useSelector((state) => state.auth);
   
-  if (!token) {
+  if (!isAdmin) {
     return <Navigate to="/login" />;
   }
 
-  if (role !== "admin") {
-    return <Navigate to="/" />;
-  }
+  // if (isAdmin !== "admin") {
+  //   return <Navigate to="/" />;
+  // } 
 
   return <Outlet />;
 };

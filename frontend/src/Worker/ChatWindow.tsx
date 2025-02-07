@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Send, Paperclip, MoreVertical, Phone, Video } from 'lucide-react';
+import { MoreVertical, Paperclip, Phone, Send, Video } from 'lucide-react';
+import { useState } from 'react';
 
 interface Message {
   id: number;
@@ -49,7 +49,7 @@ export default function ChatWindow() {
   };
 
   return (
-    <div className="flex flex-col h-[600px] w-[400px] bg-white rounded-lg shadow-xl">
+    <div className="flex flex-col top-96 bg-white rounded-lg shadow-xl">
       {/* Chat Header */}
       <div className="flex items-center justify-between p-4 border-b">
         <div className="flex items-center space-x-3">
@@ -110,8 +110,8 @@ export default function ChatWindow() {
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-            placeholder="Type your message..."
-            className="flex-1 p-2 border rounded-full focus:outline-none focus:border-blue-500"
+            placeholder="  Type your message..."
+            className="flex-1 p-2 border bg-yellow-50 rounded-full focus:outline-none focus:border-blue-500"
           />
           <button
             onClick={handleSend}

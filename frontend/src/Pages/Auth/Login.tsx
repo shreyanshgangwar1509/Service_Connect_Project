@@ -1,11 +1,13 @@
 
+import { server } from "@/lib/constants/constant";
+import { userExist } from "@/redux/reducers/auth";
 import axios from "axios";
 import { useState } from "react";
+import { toast } from "react-hot-toast";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom"; // If using react-router
 
-const api = axios.create({
-  baseURL: import.meta.env.BASE_URL || "http://localhost:3000", // Set the base URL here
-});
+
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -13,33 +15,32 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [role, setRole] = useState("user");
-  // const [isLogged ,setIslogged] = useState(false)
+  const [isLogin, setIsLogin] = useState(true);
+  const dispatch = useDispatch();
+
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await fetch("http://localhost:3000/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password, role }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Invalid email or password. Please try again.");
+    const toastId = toast.loading("Logging...")
+    const config = {
+      withCredentials: true, headers: {
+        "Content-Type": "application/json"
       }
-
-      const data = await response.json();
-      console.log(data.accesstoken);
-
-      // Save token in local storage
-      localStorage.setItem("token", data.accesstoken);
-
-      // Navigate to profile
-      navigate("/profile");
-    } catch (error) {
-      console.log(error);
-      setErrorMessage("Invalid email or password. Please try again.");
+    };
+    try {
+      const { data } = await axios.post(`${server}/api/auth/login`, {
+        email,
+        password
+      }, config)
+      dispatch(userExist(data.user));
+      toast.success(data.message, { id: toastId })
+      navigate('/')
+    } catch (err) {
+            toast.error(err?.response?.data?.message || "Something Went Wrong", { id: toastId })
+    }
+    finally {
+      setEmail('');
+      setPassword('');
     }
   };
 

@@ -1,58 +1,26 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 
 
 // Create Axios instance with default settings
 const api = axios.create({
-  baseURL: import.meta.env.BASE_URL ||'http://localhost:3000', // Backend API base URL
-  withCredentials: true, // Ensures cookies are included
+  baseURL: import.meta.env.BASE_URL ||'http://localhost:3000', 
+  withCredentials: true, 
 });
 
 const Profile: React.FC = () => {
-  const [profile, setProfile] = useState(null);
-  const [error, setError] = useState<string | null>(null);
-  
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        // Retrieve token from localStorage
-        const adminData = localStorage.getItem('token') || '{}';
-        const token = adminData || null;
+  const { user } = useSelector((state) => state.auth);
 
-        console.log('Token:', token);
-
-        // Make API request with Authorization header
-        const response = await api.get('/api/auth/me', {
-          headers: {
-            Authorization: `Bearer ${token}`, // Add Bearer token to headers
-          },
-        });
-
-        setProfile(response.data);
-        console.log(profile);
-        
-      } catch (err) {
-        setError('Error in fetching profile: Server Error');
-        console.error(err);
-      }
-    };
-
-    fetchProfile();
-  }, []);
-
-  if (error) {
-    return <div>{error}</div>;
-  }
-
-  if (!profile) {
+  if (!user) {
     return <div>Loading...</div>;
   }
 
   return (
     <div>
-      {/* <img src={profile.avatar.url} alt="Profile Avatar" /> */}
-      <h1>{profile.name}</h1>
-      <h2>{profile.email}</h2>
+      <img src={user.avatar.url} alt="user Avatar" />
+      <h1>{user.name}</h1>
+      <h2>{user.email}</h2>
     </div>
   );
 };

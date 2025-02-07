@@ -24,7 +24,13 @@ const workerSchema = new Schema({
     },
     services: [
         {
+            service:{
             type: String, // Corrected 'Type' to 'type'
+            },
+            charges: {
+                type: String,
+                default:"50"
+            }
         }
     ],
     phone: {
@@ -74,12 +80,16 @@ const workerSchema = new Schema({
         type: Number,
         default:0,
     },
-    review: [{
+    review: [
+        {
         star:{
         type:Number,
         },
         content: {
-        type:String,}}],
+            type: String,
+        }
+    }
+    ],
     portfolio: {
         projects: [
             {

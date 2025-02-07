@@ -92,7 +92,7 @@ const RecommendationForm: React.FC = () => {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 p-4">
       {/* Header */}
       <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-gray-200 mb-6">
-        SmartMatch AI – Find the Best Professionals
+        SmartMatch AI  Find the Best Professionals
       </h2>
 
       {/* Form Section */}

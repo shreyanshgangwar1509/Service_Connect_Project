@@ -1,20 +1,21 @@
-import useAuth from "@/hooks/useAuth";
+import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import BookingForm from "./BookingForm";
 
 function BookPage() {
   
-  const { isAuthenticated, userId, role } = useAuth();
+  const { isVerified } = useSelector((state)=>state.auth);
   const location = useLocation();
-  const { service, price } = location.state || {}; 
+  const { service, price,id } = location.state || {}; 
 
   console.log("Service:", service); 
   console.log("Charges:", price); 
+  console.log('id ', id);
 
-  return isAuthenticated===true ?(
+  return isVerified?(
     <div>
       <h1>Booking for: {service}</h1>
-      <BookingForm service={service} charges={price} workerId={userId} /> 
+      <BookingForm service={service} charges={price} workerId={id} /> 
     </div>
   ):(<h1>Log in first...</h1>)
 }

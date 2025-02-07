@@ -101,8 +101,8 @@ const VoiceCommand = () => {
             date: Date.now,
             address,
           }
-          // console.log(result.data);
           )
+          console.log(result.data);
 
         setResponse(`${serviceMap[matchedService]} booked for tomorrow!`);
         speak(`${serviceMap[matchedService]} booked successfully for tomorrow!`);

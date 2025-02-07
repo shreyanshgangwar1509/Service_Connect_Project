@@ -1,6 +1,6 @@
-import useAuth from "@/hooks/useAuth";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 interface Booking {
   id: string;
@@ -24,9 +24,9 @@ const MyBookings: React.FC = () => {
     fetchBookings();
   }, []);
 
-  const { isAuthenticated } = useAuth();
+  const { isVerified } = useSelector((state)=>state.auth);
 
-  if (!isAuthenticated) {
+  if (!isVerified) {
     return <p>Please login to access this page.</p>;
   }
   if (error) {

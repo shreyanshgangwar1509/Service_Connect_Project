@@ -17,7 +17,6 @@ import ARScanner from "./components/ARScanner";
 import GetHiredPage from "./components/GetHired/page";
 import BookingsPage from "./Pages/Booking/BookingsPage";
 import MyBookings from "./Pages/Booking/MyBookings";
-import Chat from "./Pages/ChatBot/Chat";
 import Inventory from "./Pages/Inventory";
 import Profile from "./Pages/Profile";
 import RecommendationPage from "./Pages/Recommendation";
@@ -26,11 +25,11 @@ import ServiceTemplate from "./Pages/Services/ServiceTemplate";
 import VoiceCommandScreen from "./Pages/VoiceCommandScreen";
 
 import Analytics from "./Worker/Analytics";
+import ChatWindow from "./Worker/ChatWindow";
 import Community from "./Worker/Community";
 import { Bookings } from "./Worker/MyBooking";
 import { OrderConfirmationPage } from "./Worker/OrderConfirmation";
 import Portfolio from "./Worker/Portfolio";
-import ChatWindow from "./Worker/ChatWindow";
 
 // import Chat from "./Pages/ChatBot/Chat";
 
@@ -103,9 +102,8 @@ function App() {
           <Route path="/become-provider" element={<GetHiredPage />} />
           <Route path="/chatbot" element={<ChatBot />} />
           <Route path="/location-tracking" element={<Map />} />
-          <Route path='/chat' element={<Chat/>}/>
+          {/* <Route path='/chat' element={<Chat/>}/> */}
           {/* Service Routes */}
-          <Route path="/chat" element={<Chat />} />
           <Route path="/plumbing" element={<ServiceTemplate serviceName="Plumbing"  />} />
           <Route path="/painting" element={<ServiceTemplate serviceName="Painting" />} />
           <Route path="/cleaning" element={<ServiceTemplate serviceName="HomeCleaning"/>} />
@@ -142,7 +140,8 @@ function App() {
 
           {/* </Route> */}
         </Routes>
-        <ChatBot/>
+        <ChatBot />
+        {/* <ToastIcon/> */}
         <Footer />
        
       </Router>

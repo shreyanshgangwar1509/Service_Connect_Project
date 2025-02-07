@@ -192,9 +192,16 @@ const getAllProviders = async (req, res) => {
             center: { type: 'Point', coordinates: [lng, lat] },
             maxDistance: 40000,
         })
-        .select('name avatar.url location.coordinates rating'); // Select specific fields
-
-        // Check if workers found
+    const modifiedWorkers = workers.map(({ name, _id, services, rating, avatar }) => {
+      const serviceDetails = services.find(s => s.name === service); // Adjust based on your schema
+      return {
+        id: _id,
+        name,
+        rating,
+        avatar: avatar?.url || null,
+        charges: serviceDetails ? serviceDetails.charges : null,
+      };
+    });
         if (!workers.length) {
             return res.status(404).json({ message: "No providers found for the given service and location." });
     }
@@ -205,7 +212,7 @@ const getAllProviders = async (req, res) => {
         // Send response
         res.status(200).json({
             success: true,
-            data: workers,
+            data: modifiedWorkers,
         });
     } catch (error) {
         console.error("Error fetching providers:", error);
