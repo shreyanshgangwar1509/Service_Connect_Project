@@ -1,15 +1,27 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Star, Award, Mic } from "lucide-react";
+import { Star, Award, Mic,Menu } from "lucide-react";
+
+
 
 export default function Portfolio() {
+
   const [workSamples, setWorkSamples] = useState([
     { id: 1, image: "/placeholder.svg", description: "" },
     { id: 2, image: "/placeholder.svg", description: "" },
     { id: 3, image: "/placeholder.svg", description: "" },
   ]);
+
+  const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate(); 
+  const handleMenuClick = (route) => {
+    navigate(route);
+    setMenuOpen(false);
+  };
+
 
   const addWorkSample = () => {
     setWorkSamples([
@@ -38,6 +50,28 @@ export default function Portfolio() {
 
   return (
     <div className="container mt-10 mx-auto px-4 py-8">
+      <div className="absolute top-15 left-4 z-50">
+        <button
+          className="p-2 border rounded-md bg-black mt-5 hover:bg-gray-200"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          <Menu className="h-6 w-6" />
+        </button>
+        {menuOpen && (
+          <div className="mt-2 w-48 bg-white shadow-lg rounded-md border">
+            <ul className="flex flex-col">
+              <li className="p-2 hover:bg-gray-100 cursor-pointer" onClick={() => handleMenuClick("/portfolio")}>Dashboard</li>
+              <li className="p-2 hover:bg-gray-100 cursor-pointer" onClick={() => handleMenuClick("/HomeWorker")}>Home</li>
+
+              <li className="p-2 hover:bg-gray-100 cursor-pointer" onClick={() => handleMenuClick("/community")}>Community</li>
+              <li className="p-2 hover:bg-gray-100 cursor-pointer" onClick={() => handleMenuClick("/feedback")}>Feedback</li>
+              <li className="p-2 hover:bg-gray-100 cursor-pointer" onClick={() => handleMenuClick("/allbookings")}>Bookings</li>
+              <li className="p-2 hover:bg-gray-100 cursor-pointer" onClick={() => handleMenuClick("/logout")}>Logout</li>
+            </ul>
+          </div>
+        )}
+      </div>
+
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-3xl font-bold mb-4">
