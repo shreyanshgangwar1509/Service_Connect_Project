@@ -1,6 +1,8 @@
 import { Button } from '@/components/ui/button';
+import { setIsverified, userNotExist } from '@/redux/reducers/auth';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 interface NavLinksProps {
@@ -9,21 +11,23 @@ interface NavLinksProps {
 
 export function NavLinks({ className = '' }: NavLinksProps) {
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
   const [logged, setlogged] = useState(false);
+  const dispatch = useDispatch();
+  const { isVerified,user } = useSelector((state) => state.auth);
   useEffect(() => {
-    if (token) {
+    
+    if (isVerified) {
       setlogged(true);
     }
     
-  }, [token, logged])
+  }, [isVerified,user,logged])
   const logout = async() => {
+    
+    dispatch(userNotExist(true));
+    dispatch(setIsverified(false));
     const reponse = await axios.get('/api/auth/logout');
-    localStorage.removeItem('token');
-    if (reponse) {
       setlogged(false);
       navigate('/login');
-    }
   }
   return (
     <div className={`items-center space-x-6 ${className}`}>

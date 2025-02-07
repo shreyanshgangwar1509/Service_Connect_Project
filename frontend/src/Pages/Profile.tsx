@@ -10,15 +10,15 @@ const api = axios.create({
 });
 
 const Profile: React.FC = () => {
+  
   const { user } = useSelector((state) => state.auth);
 
   if (!user) {
     return <div>Loading...</div>;
   }
-
   return (
     <div>
-      <img src={user.avatar.url} alt="user Avatar" />
+      <img src={user?.avatar?.url} alt="user Avatar" />
       <h1>{user.name}</h1>
       <h2>{user.email}</h2>
     </div>

@@ -144,8 +144,8 @@ const Login = async (req, res) => {
 
     const user = await Model.findOne(
         { email },
-        "password isVerified role"
-    ).select("password isVerified role");
+        "password isVerified role name email avatar"
+    ).select("password isVerified role name email avatr");
     if (!user) {
           return res.status(400).json({ message: 'Invalid credentials: user/worker not found' });
         }
@@ -168,7 +168,7 @@ const Login = async (req, res) => {
     res.cookie(process.env.ACCESS_TOKEN, accessToken, { httpOnly: true, secure: true });
     res.cookie(process.env.REFERESH_TOKEN, refreshToken, { httpOnly: true, secure: true });
 
-    return res.status(200).json({ message: "User/Worker logged in successfully", accesstoken:accessToken });
+    return res.status(200).json({ message: "User/Worker logged in successfully", accesstoken:accessToken ,user});
   } catch (error) {
     console.error("Error in Login function:", error);
     return res.status(500).json({ message: 'Server error', error });
@@ -198,14 +198,6 @@ const verifyemail = async (req, res) => {
 
   try {
     const verificationToken = await VerificationToken.findOne({ email });
-    // console.log(verificationToken);
-    // console.log(verificationToken.token);
-    console.log(email);
-    console.log(otp);
-    console.log(role);
-    
-    
-    
     
     if (!verificationToken || otp !== verificationToken.token) {
       return res.status(400).json({ message: "Invalid or expired OTP." });

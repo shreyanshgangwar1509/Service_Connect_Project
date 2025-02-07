@@ -50,7 +50,7 @@ const Provider = () => {
         Skills: ${skills}
       `);
       setErrors([]);
-      // Clear form fields
+      
       setName('');
       setEmail('');
       setPhone('');

@@ -1,6 +1,6 @@
 
 import { server } from "@/lib/constants/constant";
-import { userExist } from "@/redux/reducers/auth";
+import { setIsverified, userExist } from "@/redux/reducers/auth";
 import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
@@ -32,7 +32,9 @@ export default function LoginPage() {
         email,
         password
       }, config)
+
       dispatch(userExist(data.user));
+      dispatch(setIsverified(true));
       toast.success(data.message, { id: toastId })
       navigate('/')
     } catch (err) {

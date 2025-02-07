@@ -7,7 +7,6 @@ import { Stats } from "@/components/home/Stats"
 function Home() {
   return (
     <div>
-     
           <Hero />
           <Stats />
           <ServicesGrid />

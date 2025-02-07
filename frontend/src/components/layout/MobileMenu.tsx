@@ -1,10 +1,10 @@
-import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Sheet,
   SheetContent,
   SheetTrigger,
 } from '@/components/ui/sheet';
+import { Menu } from 'lucide-react';
 import { NavLinks } from './NavLinks';
 
 interface MobileMenuProps {
@@ -12,6 +12,7 @@ interface MobileMenuProps {
 }
 
 export function MobileMenu({ className = '' }: MobileMenuProps) {
+  
   return (
     <div className={className}>
       <Sheet>
