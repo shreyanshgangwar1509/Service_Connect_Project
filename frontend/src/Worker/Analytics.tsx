@@ -1,4 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { server } from "@/constants/config";
 import axios from "axios";
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
 import { useEffect, useState } from "react";
@@ -49,7 +50,8 @@ export default function Analytics() {
     const fetchRatingData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get(`${import.meta.env.BASE_URL}/api/worker/ratingdetail`, {
+        const response = await axios.get(`${server}/api/worker/ratingdetails`, {
+          withCredentials:true,
           headers: { Authorization: `Bearer ${token}` },
         });
 

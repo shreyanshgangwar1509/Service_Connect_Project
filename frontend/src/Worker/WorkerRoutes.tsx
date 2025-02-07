@@ -1,10 +1,10 @@
 
-import useAuth from "@/hooks/useAuth";
+import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 
 const WorkerRoutes = () => {
-  const { isAuthenticated, role } = useAuth();
-  if (!isAuthenticated) {
+  const { isWorker } = useSelector((state)=>state.auth);
+  if (!isWorker) {
     return <Navigate to="/login" />;
   }
 

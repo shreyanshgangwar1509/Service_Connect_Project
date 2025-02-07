@@ -1,7 +1,7 @@
+import { Calendar, Clock, MapPin } from 'lucide-react';
 import { useState } from "react";
-import { Calendar, MapPin, Clock } from 'lucide-react';
+import { useNavigate } from "react-router-dom";
 import { Booking } from './Booking';
-import { useNavigate } from "react-router-dom"; 
 
 interface BookingCardProps {
   booking: Booking;
@@ -15,8 +15,9 @@ export function BookingCard({ booking, type, onDelete, onReview }: BookingCardPr
   const [isAvailable, setIsAvailable] = useState(true); 
   const navigate = useNavigate(); 
   const handleMenuClick = (route) => {
-    navigate(route); 
-    setMenuOpen(false);};
+    navigate(route);
+    setMenuOpen(false);
+  }
   return (
     <div className="bg-white rounded-lg shadow-sm p-6 mb-4">
       <div className="flex justify-between items-start">

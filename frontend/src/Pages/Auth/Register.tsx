@@ -90,9 +90,8 @@ export default function Register() {
       setname('');
       setWorkerName('');
       setService('');
-      
+      setIsOtpScreen(true);
       setPhone('');
-
     }
   };
 

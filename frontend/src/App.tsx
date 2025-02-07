@@ -24,6 +24,7 @@ import AllService from "./Pages/Services/AllService";
 import ServiceTemplate from "./Pages/Services/ServiceTemplate";
 import VoiceCommandScreen from "./Pages/VoiceCommandScreen";
 
+import { Toaster } from "react-hot-toast";
 import Analytics from "./Worker/Analytics";
 import ChatWindow from "./Worker/ChatWindow";
 import Community from "./Worker/Community";
@@ -143,7 +144,7 @@ function App() {
         <ChatBot />
         {/* <ToastIcon/> */}
         <Footer />
-       
+        <Toaster position='bottom-center'/>
       </Router>
     </div>
   );
